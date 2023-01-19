@@ -13,6 +13,7 @@
         <module>spring-microservice-credit-transactions</module>
         <module>spring-microservice-debit-transactions</module>
         <module>spring-microservice-saving-transactions</module>
+        <module>spring-microservice-gateway</module>
     </modules>
 
     <properties>
