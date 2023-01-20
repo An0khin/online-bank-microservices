@@ -16,3 +16,4 @@ eureka:
     service-url:
       defaultZone: http://localhost:8080/eureka
 
+
