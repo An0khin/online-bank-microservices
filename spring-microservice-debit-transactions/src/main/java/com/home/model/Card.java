@@ -9,7 +9,7 @@ public abstract class Card {
         return false;
     }
 
-    public abstract void accrueMoney(Double money);
+    public abstract boolean accrueMoney(Double money);
 
     public abstract boolean takeMoney(Double takingMoney);
 }

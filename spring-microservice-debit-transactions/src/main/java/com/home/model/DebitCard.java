@@ -1,11 +1,7 @@
 package com.home.model;
 
-//import com.home.model.Account;
-//import com.home.model.DebitTransaction;
-
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -77,8 +73,9 @@ public class DebitCard extends Card {
     }
 
     @Override
-    public void accrueMoney(Double money) {
+    public boolean accrueMoney(Double money) {
         this.money += money;
+        return true;
     }
 
     @Override

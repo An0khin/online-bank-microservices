@@ -6,6 +6,8 @@ server:
   port: 8080
 
 eureka:
+  server:
+    renewal-percent-threshold: 0.5
   client:
     register-with-eureka: false
     fetch-registry: false

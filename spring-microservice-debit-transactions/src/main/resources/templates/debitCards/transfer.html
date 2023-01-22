@@ -9,18 +9,18 @@
 </head>
 <body>
 <form th:method="POST">
-    <div th:object="${ids}">
+    <div>
         <label for="from">From:</label>
-        <select name="ids" id="from" th:field="${ids.text}">
+        <select th:name="from" id="from">
             <option th:each="debitCard : ${debitCards}" th:value="${debitCard.id}" th:text="${debitCard.id} + ' ' + ${debitCard.money}"/>
         </select>
     </div>
 
     <br>
 
-    <div th:object="${ids}">
+    <div>
         <label for="to">To:</label>
-        <input type="text" id="to" th:name="ids" th:field="${ids.text}" list="debitCards">
+        <input type="text" id="to" th:name="ids" list="debitCards">
     </div>
 
     <datalist name="debitCards" id="debitCards">
@@ -29,9 +29,9 @@
 
     <br>
 
-    <div th:object="${money}">
-        <label for="howMuch">Money:</label>
-        <input type="number" id="howMuch" th:field="*{number}">
+    <div>
+        <label for="money">Money:</label>
+        <input type="number" id="money" th:name="money"/>
     </div>
 
     <br>
