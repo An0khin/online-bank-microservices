@@ -1,6 +1,7 @@
 package com.home.controller;
 
 import com.home.model.DebitCard;
+import com.home.model.Saving;
 import com.home.service.DebitDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +12,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @Controller
 @RequestMapping
@@ -37,6 +40,12 @@ public class DebitController {
        return debitDAO.takeMoneyById(id, money);
     }
 
+    @GetMapping("/debit/get")
+    @ResponseBody
+    public DebitCard getById(@RequestParam("id") int id) {
+        return debitDAO.findDebitCardById(id);
+    }
+
     @GetMapping("/orderNewDC")
     public String createNewDebitCardPage(Model model) {
         model.addAttribute("flag", "");
@@ -49,7 +58,7 @@ public class DebitController {
                                      Model model) {
         if(agree) {
             //Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
-            int accountId = 1; //Find current user's id
+            int accountId = 1; //Find current user's id from another service
 
             debitDAO.saveDebitCard(new DebitCard(accountId));
 
@@ -68,7 +77,7 @@ public class DebitController {
     }
 
     @GetMapping("/transfer/debitToDebit")
-    public String transferDebitTo(Model model/*, HttpServletRequest request*/) {
+    public String transferDebitTo(Model model) {
         //Account account =  accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
 
         int id = 1; //Finding current user's id
@@ -91,15 +100,77 @@ public class DebitController {
 //            transactionDAO.saveDebitTransaction(new DebitTransaction(from, to, number.getNumber()));
 //        }
 
-        if(restTemplate.getForObject(URL + "/debit/take?id={id}&money={money}",
-                Boolean.class,
-                from, money))
-            restTemplate.getForObject(URL + "/debit/accrue?id={id}&money={money}",
-                    Boolean.class,
-                    to, money);
+        if(debitFrom.takeMoney(money)) {
+            debitTo.accrueMoney(money);
+            debitDAO.saveDebitCard(debitFrom);
+            debitDAO.saveDebitCard(debitTo);
+        }
+
 
         return "redirect:http://localhost:8082/";
     }
+
+    @GetMapping("/transfer/debitToSaving")
+    public String transferDebitToSavingsPage(Model model) {
+//        Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
+        int accountId = 1;
+
+        model.addAttribute("debitCards", debitDAO.findAllDebitCardsByAccountId(accountId));
+//        model.addAttribute("savings", cardDAO.findAllSavingsByAccountId(account.getId()));
+        List<Saving> savings = restTemplate.getForObject(URL + "/saving/getAll?accountId={accountId}",
+                List.class,
+                accountId);
+
+//        model.addAttribute("ids", new Text());
+//        model.addAttribute("money", new Number());
+
+        return "debitCards/transferToSaving";
+    }
+
+    @PostMapping("/transfer/debitToSaving")
+    public String transferDebitToSavings(@RequestParam("from") int from,
+                                         @RequestParam("to") int to,
+                                         @RequestParam("money") double money) {
+        DebitCard debitFrom = debitDAO.findDebitCardById(from);
+
+        if(debitFrom.takeMoney(money)) {
+            restTemplate.getForObject(URL + "/saving/accrue?id={id}&money={money}",
+                    Boolean.class,
+                    to, money);
+            debitDAO.saveDebitCard(debitFrom);
+        }
+
+        return "redirect:/";
+    }
+
+//    @GetMapping("/transfer/debitToCredit")
+//    public String transferDebitToCreditPage(Model model) {
+//        Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
+//
+//        model.addAttribute("debitCards", cardDAO.findAllDebitCardsByAccountId(account.getId()));
+//        model.addAttribute("credits", cardDAO.findAllCreditCardsByAccountId(account.getId()));
+//
+//        model.addAttribute("ids", new Text());
+//        model.addAttribute("money", new Number());
+//
+//        return "debitCards/transferToCredit";
+//    }
+//
+//    @PostMapping("/transfer/debitToCredit")
+//    public String transferDebitToCredit(@ModelAttribute("ids") Text ids, @ModelAttribute("money") Number money) {
+//        String[] strings = ids.getText().split(",");
+//
+//        DebitCard from = cardDAO.findDebitCardById(Integer.valueOf(strings[0]));
+//        CreditCard to = cardDAO.findCreditCardById(Integer.valueOf(strings[1]));
+//
+//        cardDAO.transferMoneyFromTo(from, to, money.getNumber().doubleValue());
+//
+//        if(to.getReturnMoney() == 0) {
+//            transactionDAO.setClosedToCreditLoanByCreditCard(to);
+//        }
+//
+//        return "redirect:/";
+//    }
 
 //LEARNING
     @Value("${eureka.instance.instance-id}")
