@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,7 +20,7 @@ public class DebitController {
     @Autowired
     DebitDAO debitDAO;
 
-    static final String URL = "http://localhost:8082/debit-client";
+    static final String URL = "http://localhost:8082";
 
 
     @GetMapping("/debit/accrue")
@@ -32,6 +35,29 @@ public class DebitController {
     public Boolean take(@RequestParam("id") int id,
                         @RequestParam("money") double money) {
        return debitDAO.takeMoneyById(id, money);
+    }
+
+    @GetMapping("/orderNewDC")
+    public String createNewDebitCardPage(Model model) {
+        model.addAttribute("flag", "");
+
+        return "debitCards/createNew";
+    }
+
+    @PostMapping("/orderNewDC")
+    public String createNewDebitCard(@RequestParam(value = "agree", required = false, defaultValue = "false") boolean agree,
+                                     Model model) {
+        if(agree) {
+            //Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
+            int accountId = 1; //Find current user's id
+
+            debitDAO.saveDebitCard(new DebitCard(accountId));
+
+            return "redirect:http://localhost:8082/";
+        } else {
+            model.addAttribute("flag", "You haven't read the agreement!");
+            return "debitCards/createNew";
+        }
     }
 
     @GetMapping("/debit/view")

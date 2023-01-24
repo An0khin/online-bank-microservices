@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Table(name = "debitCards")
 public class DebitCard extends Card {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "debit_cards_id_seq")
     private Integer id;
 
     @Column(nullable = false)
