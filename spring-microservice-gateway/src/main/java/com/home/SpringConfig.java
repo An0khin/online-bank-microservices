@@ -15,8 +15,10 @@ public class SpringConfig {
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("debit-route", r -> r.path("/**")
+                .route("debit-route", r -> r.path("/debit/**")
                         .uri("lb://debit-client"))
+                .route("saving-route", r -> r.path("/saving/**")
+                        .uri("lb://saving-client"))
                 .build();
     }
 }

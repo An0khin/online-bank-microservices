@@ -1,30 +1,34 @@
 package com.home.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import java.sql.Date;
+import java.time.LocalDate;
 
-public class Saving {
+public class DebitCard {
     private Integer id;
 
     private Double money;
 
-    private Double percent;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
-    private Integer accountId;
+    private int accountId;
 
-    public Saving() {
+    public DebitCard() {
     }
+
+    public DebitCard(int accountId) {
+        this.money = 0.;
+        this.date = Date.valueOf(LocalDate.now());
+        this.accountId = accountId;
+    }
+
     @Override
     public String toString() {
-        return "Saving{" +
+        return "DebitCard{" +
                 "id=" + id +
                 ", money=" + money +
-                ", percent=" + percent +
                 ", accountId=" + accountId +
                 '}';
     }
@@ -37,15 +41,11 @@ public class Saving {
         return money;
     }
 
-    public Double getPercent() {
-        return percent;
-    }
-
     public Date getDate() {
         return date;
     }
 
-    public Integer getAccountId() {
+    public int getAccountId() {
         return accountId;
     }
 }

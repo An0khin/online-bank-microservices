@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: saving-client
+  datasource:
+    url: jdbc:postgresql://localhost:5432/onlinebankm
+    password: 1234
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+
+
+server:
+  port: 0
+
+logging:
+  level:
+#    web: debug
+#    root: debug
+    sql: debug
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8080/eureka
+  instance:
+    instance-id: ${spring.application.name}:${random.value}

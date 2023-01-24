@@ -5,6 +5,7 @@ import com.home.model.Saving;
 import com.home.service.DebitDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,10 +14,11 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@RequestMapping
+@RequestMapping("/debit")
 public class DebitController {
     @Autowired
     RestTemplate restTemplate;
@@ -26,24 +28,30 @@ public class DebitController {
     static final String URL = "http://localhost:8082";
 
 
-    @GetMapping("/debit/accrue")
+    @GetMapping("/accrue")
     @ResponseBody
     public Boolean accrue(@RequestParam("id") int id,
                           @RequestParam("money") double money) {
         return debitDAO.accrueMoneyById(id, money);
     }
 
-    @GetMapping("/debit/take")
+    @GetMapping("/take")
     @ResponseBody
     public Boolean take(@RequestParam("id") int id,
                         @RequestParam("money") double money) {
        return debitDAO.takeMoneyById(id, money);
     }
 
-    @GetMapping("/debit/get")
+    @GetMapping("/get")
     @ResponseBody
     public DebitCard getById(@RequestParam("id") int id) {
         return debitDAO.findDebitCardById(id);
+    }
+
+    @GetMapping("/getAll")
+    @ResponseBody
+    public List<DebitCard> getAllByAccountId(@RequestParam("accountId") int accountId) {
+        return debitDAO.findAllDebitCardsByAccountId(accountId);
     }
 
     @GetMapping("/orderNewDC")
@@ -69,7 +77,7 @@ public class DebitController {
         }
     }
 
-    @GetMapping("/debit/view")
+    @GetMapping("/view")
     public String viewDebit(@RequestParam("id") int id,
                             Model model) {
         model.addAttribute("card", debitDAO.findDebitCardById(id));
@@ -115,14 +123,14 @@ public class DebitController {
 //        Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
         int accountId = 1;
 
-        model.addAttribute("debitCards", debitDAO.findAllDebitCardsByAccountId(accountId));
-//        model.addAttribute("savings", cardDAO.findAllSavingsByAccountId(account.getId()));
-        List<Saving> savings = restTemplate.getForObject(URL + "/saving/getAll?accountId={accountId}",
-                List.class,
+        ResponseEntity<Saving[]> savingEntity = restTemplate.getForEntity(URL + "/saving/getAll?accountId={accountId}",
+                Saving[].class,
                 accountId);
+        Saving[] savings = savingEntity.getBody();
 
-//        model.addAttribute("ids", new Text());
-//        model.addAttribute("money", new Number());
+
+        model.addAttribute("debitCards", debitDAO.findAllDebitCardsByAccountId(accountId));
+        model.addAttribute("savings", savings);
 
         return "debitCards/transferToSaving";
     }
