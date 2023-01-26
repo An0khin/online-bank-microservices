@@ -5,16 +5,16 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Debit card</title>
+    <title>Saving</title>
 </head>
 <body>
     <p th:text="${card.id}"></p>
     <p th:text="${card.money}"></p>
+    <p th:text="${card.percent} + '%'"></p>
     <p th:text="${card.date}"></p>
 
 <!--    <a th:href="">Take credit</a>-->
-    <a th:href="@{/debit/transfer/to_credit}">Transfer to credit card</a>
-    <a th:href="@{/debit/transfer/to_debit}">Transfer to debit card</a>
-    <a th:href="@{/debit/transfer/to_saving}">Transfer to saving</a>
+    <a th:href="@{/debit/transfer/to_saving}">Accrue</a>
+    <a th:href="@{/saving/transfer/to_debit}">Transfer to debit card</a>
 </body>
 </html>

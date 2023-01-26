@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "savings")
+@Table(name = "templates/savings")
 public class Saving extends Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "savings_id_seq")

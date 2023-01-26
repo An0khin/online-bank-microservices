@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Transfer to Debit card</title>
+</head>
+<body>
+    <form th:method="POST">
+        <div>
+            <label for="from">From: </label>
+            <select th:name="from" id="from">
+                <option th:each="saving : ${savings}" th:value="${saving.id}" th:text="${saving.id} + ' ' + ${saving.money}"/>
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="to">To: </label>
+            <select th:name="to" id="to">
+                <option th:each="debit : ${debitCards}" th:value="${debit.id}" th:text="${debit.id} + ' ' + ${debit.money}"/>
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="money">Money: </label>
+            <input type="number" th:name="money" id="money">
+        </div>
+
+        <br>
+
+        <input type="submit" value="Transfer">
+    </form>
+</body>
+</html>

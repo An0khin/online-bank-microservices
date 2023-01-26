@@ -1,14 +1,13 @@
 package com.home.controller;
 
+import com.home.model.DebitCard;
 import com.home.model.Saving;
 import com.home.service.SavingDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -49,28 +48,28 @@ public class SavingController {
         return savingDAO.findAllSavingsByAccountId(accountId);
     }
 
-//    @GetMapping("/orderNewS")
-//    public String createNewDebitCardPage(Model model) {
-//        model.addAttribute("flag", "");
-//
-//        return "debitCards/createNew";
-//    }
+    @GetMapping("/orderNewS")
+    public String createNewDebitCardPage(Model model) {
+        model.addAttribute("flag", "");
 
-//    @PostMapping("/orderNewS")
-//    public String createNewDebitCard(@RequestParam(value = "agree", required = false, defaultValue = "false") boolean agree,
-//                                     Model model) {
-//        if(agree) {
-//            //Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
-//            int accountId = 1; //Find current user's id from another service
-//
-//            debitDAO.saveDebitCard(new DebitCard(accountId));
-//
-//            return "redirect:http://localhost:8082/";
-//        } else {
-//            model.addAttribute("flag", "You haven't read the agreement!");
-//            return "debitCards/createNew";
-//        }
-//    }
+        return "savings/createNew";
+    }
+
+    @PostMapping("/orderNewS")
+    public String createNewSaving(@RequestParam(value = "agree", required = false, defaultValue = "false") boolean agree,
+                                     Model model) {
+        if(agree) {
+            //Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
+            int accountId = 1; //Find current user's id from another service
+
+            savingDAO.saveSaving(new Saving(accountId));
+
+            return "redirect:http://localhost:8082/";
+        } else {
+            model.addAttribute("flag", "You haven't read the agreement!");
+            return "savings/createNew";
+        }
+    }
 
     @GetMapping("/view")
     public String viewDebit(@RequestParam("id") int id,
@@ -78,4 +77,39 @@ public class SavingController {
         model.addAttribute("card", savingDAO.findSavingById(id));
         return "savings/view";
     }
+
+    @GetMapping("/transfer/to_debit")
+    public String transferSavingToDebitPage(Model model) {
+//        Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
+        int accountId = 1;
+
+        ResponseEntity<DebitCard[]> debitEntity = restTemplate.getForEntity(URL + "/debit/getAll?accountId={accountId}",
+                DebitCard[].class,
+                accountId);
+        DebitCard[] debitCards = debitEntity.getBody();
+
+
+        model.addAttribute("debitCards", debitCards);
+        model.addAttribute("savings", savingDAO.findAllSavingsByAccountId(accountId));
+
+        return "savings/transfer";
+    }
+
+    @PostMapping("/transfer/to_debit")
+    public String transferDebitToSavings(@RequestParam("from") int from,
+                                         @RequestParam("to") int to,
+                                         @RequestParam("money") double money) {
+        Saving savingFrom = savingDAO.findSavingById(from);
+
+        if (savingFrom.takeMoney(money)) {
+            restTemplate.getForObject(URL + "/deibt/accrue?id={id}&money={money}",
+                    Boolean.class,
+                    to, money);
+            savingDAO.saveSaving(savingFrom);
+        }
+
+        return "redirect:/";
+    }
+
+//
 }
