@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Table(name = "savings")
 public class Saving extends Card {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "savings_id_seq")
     private Integer id;
 
     @Column(nullable = false)

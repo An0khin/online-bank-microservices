@@ -1,13 +1,14 @@
 package com.home.controller;
 
-import com.home.model.DebitCard;
 import com.home.model.Saving;
 import com.home.service.SavingDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -21,7 +22,6 @@ public class SavingController {
     SavingDAO savingDAO;
 
     static final String URL = "http://localhost:8082";
-
 
     @GetMapping("/accrue")
     @ResponseBody
@@ -43,7 +43,7 @@ public class SavingController {
         return savingDAO.findSavingById(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get_all")
     @ResponseBody
     public List<Saving> getAllByAccountId(@RequestParam("accountId") int accountId) {
         return savingDAO.findAllSavingsByAccountId(accountId);
@@ -72,7 +72,7 @@ public class SavingController {
 //        }
 //    }
 
-    @GetMapping("/saving/view")
+    @GetMapping("/view")
     public String viewDebit(@RequestParam("id") int id,
                             Model model) {
         model.addAttribute("card", savingDAO.findSavingById(id));

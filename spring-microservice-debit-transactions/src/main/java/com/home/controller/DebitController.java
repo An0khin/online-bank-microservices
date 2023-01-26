@@ -8,13 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -39,7 +35,7 @@ public class DebitController {
     @ResponseBody
     public Boolean take(@RequestParam("id") int id,
                         @RequestParam("money") double money) {
-       return debitDAO.takeMoneyById(id, money);
+        return debitDAO.takeMoneyById(id, money);
     }
 
     @GetMapping("/get")
@@ -48,23 +44,23 @@ public class DebitController {
         return debitDAO.findDebitCardById(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get_all")
     @ResponseBody
     public List<DebitCard> getAllByAccountId(@RequestParam("accountId") int accountId) {
         return debitDAO.findAllDebitCardsByAccountId(accountId);
     }
 
-    @GetMapping("/orderNewDC")
+    @GetMapping("/order_new_dc")
     public String createNewDebitCardPage(Model model) {
         model.addAttribute("flag", "");
 
         return "debitCards/createNew";
     }
 
-    @PostMapping("/orderNewDC")
+    @PostMapping("/order_new_dc")
     public String createNewDebitCard(@RequestParam(value = "agree", required = false, defaultValue = "false") boolean agree,
                                      Model model) {
-        if(agree) {
+        if (agree) {
             //Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
             int accountId = 1; //Find current user's id from another service
 
@@ -84,7 +80,7 @@ public class DebitController {
         return "debitCards/view";
     }
 
-    @GetMapping("/transfer/debitToDebit")
+    @GetMapping("/transfer/to_debit")
     public String transferDebitTo(Model model) {
         //Account account =  accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
 
@@ -95,7 +91,7 @@ public class DebitController {
         return "debitCards/transfer";
     }
 
-    @PostMapping("/transfer/debitToDebit")
+    @PostMapping("/transfer/to_debit")
     public String transferDebitToPost(@RequestParam("from") int from,
                                       @RequestParam("to") int to,
                                       @RequestParam("money") double money) {
@@ -108,7 +104,7 @@ public class DebitController {
 //            transactionDAO.saveDebitTransaction(new DebitTransaction(from, to, number.getNumber()));
 //        }
 
-        if(debitFrom.takeMoney(money)) {
+        if (debitFrom.takeMoney(money)) {
             debitTo.accrueMoney(money);
             debitDAO.saveDebitCard(debitFrom);
             debitDAO.saveDebitCard(debitTo);
@@ -118,7 +114,7 @@ public class DebitController {
         return "redirect:http://localhost:8082/";
     }
 
-    @GetMapping("/transfer/debitToSaving")
+    @GetMapping("/transfer/to_saving")
     public String transferDebitToSavingsPage(Model model) {
 //        Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
         int accountId = 1;
@@ -135,13 +131,13 @@ public class DebitController {
         return "debitCards/transferToSaving";
     }
 
-    @PostMapping("/transfer/debitToSaving")
+    @PostMapping("/transfer/to_saving")
     public String transferDebitToSavings(@RequestParam("from") int from,
                                          @RequestParam("to") int to,
                                          @RequestParam("money") double money) {
         DebitCard debitFrom = debitDAO.findDebitCardById(from);
 
-        if(debitFrom.takeMoney(money)) {
+        if (debitFrom.takeMoney(money)) {
             restTemplate.getForObject(URL + "/saving/accrue?id={id}&money={money}",
                     Boolean.class,
                     to, money);
@@ -180,7 +176,7 @@ public class DebitController {
 //        return "redirect:/";
 //    }
 
-//LEARNING
+    //LEARNING
     @Value("${eureka.instance.instance-id}")
     String instance;
 
@@ -193,7 +189,7 @@ public class DebitController {
     @GetMapping("/debit")
     @ResponseBody
     public DebitCard debits(@RequestParam("id") int id,
-                         Model model) {
+                            Model model) {
 //        model.addAttribute("card", debitCardRepository.findById(id).orElse(null));
 //        return "debitCards/view";
         return debitDAO.findDebitCardById(id);
