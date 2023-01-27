@@ -1,6 +1,6 @@
 spring:
   application:
-    name: saving-client
+    name: credit-client
   datasource:
     url: jdbc:postgresql://localhost:5432/onlinebankm
     password: 1234
@@ -10,14 +10,11 @@ spring:
     hibernate:
       ddl-auto: update
 
-
 server:
   port: 0
 
 logging:
   level:
-#    web: debug
-#    root: debug
     sql: debug
 
 eureka:
