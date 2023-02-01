@@ -11,6 +11,8 @@
     <file url="file://$PROJECT_DIR$/spring-microservice-gateway/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-microservice-saving-transactions/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-microservice-saving-transactions/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-microservice-security/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-microservice-security/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>
