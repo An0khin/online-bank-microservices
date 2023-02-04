@@ -19,6 +19,12 @@ public class SpringConfig {
                         .uri("lb://debit-client"))
                 .route("saving-route", r -> r.path("/saving/**")
                         .uri("lb://saving-client"))
+                .route("register", r -> r.path("/register")
+                        .filters(spec -> spec.rewritePath("/register", "/auth"))
+                        .uri("http://localhost:8086"))
+                .route("token", r -> r.path("/login")
+                        .filters(spec -> spec.rewritePath("/login", "/auth/token"))
+                        .uri("http://localhost:8086"))
                 .build();
     }
 }
