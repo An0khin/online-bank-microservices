@@ -6,6 +6,7 @@ import com.home.security.TokenResponse;
 import com.home.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,13 +19,13 @@ public class AuthController {
 
     @PostMapping
     public ResponseEntity<String> register(@RequestBody Account account) {
-        accountService.register(account.getLogin(), account.getClientSecret());
+        accountService.register(account);
         return ResponseEntity.ok("Registered");
     }
 
     @PostMapping("/token")
     public TokenResponse getToken(@RequestBody Account account) {
-        accountService.checkCredentials(account.getLogin(), account.getClientSecret());
-        return new TokenResponse(tokenService.generateToken(account.getLogin()));
+        accountService.checkCredentials(account);
+        return new TokenResponse(tokenService.generateToken(account.getLogin(), account.getRole()));
     }
 }

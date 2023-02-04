@@ -2,8 +2,11 @@ package com.home.model;
 
 import lombok.Value;
 
+import java.util.List;
+
 @Value
 public class Account {
     String login;
-    String clientSecret;
+    String password;
+    String role;
 }

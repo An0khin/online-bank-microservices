@@ -8,11 +8,11 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
 
 server:
-  port: 8080
+  port: 8086
 
 logging:
   level:
@@ -24,9 +24,9 @@ auth:
   jwt:
     secret: 5YfbJBwLlGCQuFnsvJ2p9LRpoqNUCb1e;
 
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://localhost:8080/eureka
-#  instance:
-#    instance-id: ${spring.application.name}:${random.value}
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8080/eureka
+  instance:
+    instance-id: ${spring.application.name}:${server.port}

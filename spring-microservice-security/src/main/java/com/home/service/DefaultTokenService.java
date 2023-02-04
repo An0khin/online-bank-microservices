@@ -1,7 +1,8 @@
-package com.home.security;
+package com.home.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.home.security.TokenService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public class DefaultTokenService implements TokenService {
     private String secretKey;
 
     @Override
-    public String generateToken(String login) {
+    public String generateToken(String login, String role) {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
         Instant now = Instant.now();
@@ -24,6 +25,7 @@ public class DefaultTokenService implements TokenService {
                 .withIssuer("security-client") //Кто выдает токен
                 .withAudience("debit-client", "saving-client", "credit-client") //Для кого предназначается
                 .withSubject(login) //Поле по которому формируется токен
+                .withClaim("role", role)
                 .withIssuedAt(now) //Время формирования
                 .withExpiresAt(exp) //Длительность жизни
                 .sign(algorithm); //Алгоритм формирования

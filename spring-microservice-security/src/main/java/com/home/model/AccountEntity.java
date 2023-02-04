@@ -17,5 +17,8 @@ public class AccountEntity {
 
     @Column(nullable = false)
     private String hash;
+
+    @Column(nullable = false)
+    private String role;
 }
 

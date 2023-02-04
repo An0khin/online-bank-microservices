@@ -1,6 +1,8 @@
 package com.home.security;
 
+import com.home.model.Account;
+
 public interface AccountService {
-    void register(String login, String clientSecret); //Регистрация юзера
-    void checkCredentials(String login, String clientSecret); //Проверка аутентификационных данных
+    void register(Account account); //Регистрация юзера
+    void checkCredentials(Account account); //Проверка аутентификационных данных
 }
