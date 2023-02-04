@@ -20,6 +20,11 @@ logging:
 #    root: debug
     sql: debug
 
+auth:
+  jwt:
+    secret: 5YfbJBwLlGCQuFnsvJ2p9LRpoqNUCb1e;
+  enabled: true
+
 eureka:
   client:
     serviceUrl:
