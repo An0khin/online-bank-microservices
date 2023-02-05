@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 
 @Component
@@ -36,13 +37,23 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
 
-        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+//        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String authHeader = Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals("Authorization"))
+                .findFirst()
+                .get()
+                .getValue();
+
         log.info(authHeader);
 
         if(authHeader == null || authHeader.isBlank()) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            log.warn("null");
+            response.sendRedirect("http://localhost:8082/login");
         } else if(!checkAuthorization(authHeader)) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            log.warn("Check failed");
+            response.sendRedirect("http://localhost:8082/login");
         } else {
             HashSet<GrantedAuthority> set = new HashSet<>();
             set.add(new SimpleGrantedAuthority(tokenService.getRole(getToken(authHeader))));
@@ -72,7 +83,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     }
 
     public boolean checkAuthorization(String auth) {
-        if(!auth.startsWith("Bearer ")) {
+        if(!auth.startsWith("Bearer_")) {
             return false;
         }
 

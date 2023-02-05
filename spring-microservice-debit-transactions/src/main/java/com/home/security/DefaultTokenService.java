@@ -37,6 +37,10 @@ public class DefaultTokenService implements TokenService {
     public boolean checkToken(String token) {
         DecodedJWT decodedJWT = getDecodedToken(token);
 
+        if(decodedJWT == null) {
+            return false;
+        }
+
         log.info(decodedJWT.getIssuer());
         if(!decodedJWT.getIssuer().equals("security-client")) {
             return false;
