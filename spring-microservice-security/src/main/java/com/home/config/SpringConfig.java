@@ -10,12 +10,13 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
 @ComponentScan("com.home")
 @EnableJpaRepositories("com.home.repository")
 @EntityScan("com.home")
-
+@EnableWebMvc
 @EnableWebSecurity
 public class SpringConfig {
     public static void main(String[] args) {
