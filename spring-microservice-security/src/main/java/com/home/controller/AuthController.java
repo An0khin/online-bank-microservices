@@ -1,19 +1,16 @@
 package com.home.controller;
 
 import com.home.model.Account;
-import com.home.security.AccountService;
-import com.home.security.TokenService;
+import com.home.model.AccountService;
+import com.home.model.TokenService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @RequestMapping("/auth")
 @Controller
@@ -33,6 +30,11 @@ public class AuthController {
         return ResponseEntity.ok("Registered");
     }
 
+    @GetMapping("/token")
+    public String loginForm() {
+        return "login";
+    }
+
     @PostMapping("/token")
     public void getToken(HttpServletRequest request,
                            HttpServletResponse response,
@@ -47,16 +49,9 @@ public class AuthController {
 
         response.addCookie(new Cookie("Authorization", "Bearer_" + tokenService.generateToken(account.getLogin(), account.getRole())));
         try {
-            response.sendRedirect("http://localhost:8082/debit/view?id=1");
+            response.sendRedirect("http://localhost:8082/");
         } catch(Exception e) {
             e.printStackTrace();
         }
-
-
-    }
-
-    @GetMapping("/token")
-    public String loginForm() {
-        return "login";
     }
 }

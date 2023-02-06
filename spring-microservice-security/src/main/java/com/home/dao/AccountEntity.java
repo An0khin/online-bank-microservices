@@ -1,4 +1,4 @@
-package com.home.model;
+package com.home.dao;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ public class AccountEntity {
     private String login;
 
     @Column(nullable = false)
-    private String hash;
+    private String password;
 
     @Column(nullable = false)
     private String role;

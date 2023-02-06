@@ -1,11 +1,11 @@
 package com.home.service;
 
-import com.home.exception.LoginException;
-import com.home.exception.RegistrationException;
+import com.home.model.exception.LoginException;
+import com.home.model.exception.RegistrationException;
 import com.home.model.Account;
-import com.home.model.AccountEntity;
+import com.home.dao.AccountEntity;
 import com.home.repository.AccountRepository;
-import com.home.security.AccountService;
+import com.home.model.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,9 @@ public class DefaultAccountService implements AccountService {
             throw new RegistrationException(String.format("Account with %s login already exists", account.getLogin()));
         }
 
-        String hash = BCrypt.hashpw(account.getPassword(), BCrypt.gensalt());
+        String password_hash = BCrypt.hashpw(account.getPassword(), BCrypt.gensalt());
         String role_hash = BCrypt.hashpw(account.getRole(), BCrypt.gensalt());
-        accountRepository.save(new AccountEntity(account.getLogin(), hash, role_hash));
+        accountRepository.save(new AccountEntity(account.getLogin(), password_hash, role_hash));
     }
 
     @Override
@@ -36,9 +36,9 @@ public class DefaultAccountService implements AccountService {
 
         AccountEntity accountEntity = optionalAccount.get();
 
-        if(!BCrypt.checkpw(account.getPassword(), accountEntity.getHash()) ||
+        if(!BCrypt.checkpw(account.getPassword(), accountEntity.getPassword()) ||
             !BCrypt.checkpw(account.getRole() , accountEntity.getRole())) {
-            throw new LoginException("Hash is incorrect");
+            throw new LoginException("Password is incorrect");
         }
     }
 }
