@@ -63,4 +63,11 @@ public class DefaultTokenService implements TokenService {
 
         return decodedJWT.getClaim("role").asString();
     }
+
+    @Override
+    public String getName(String token) {
+        log.info("Username: " + getDecodedToken(token).getClaim("sub").asString());
+
+        return getDecodedToken(token).getClaim("sub").asString();
+    }
 }

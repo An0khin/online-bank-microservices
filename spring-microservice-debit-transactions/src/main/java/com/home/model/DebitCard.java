@@ -20,12 +20,12 @@ public class DebitCard extends Card {
     private Date date;
 
     @Column(name = "account_id", nullable = false)
-    private int accountId;
+    private String accountId;
 
     public DebitCard() {
     }
 
-    public DebitCard(int accountId) {
+    public DebitCard(String accountId) {
         this.money = 0.;
         this.date = Date.valueOf(LocalDate.now());
         this.accountId = accountId;
@@ -64,11 +64,11 @@ public class DebitCard extends Card {
         this.date = date;
     }
 
-    public int getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 

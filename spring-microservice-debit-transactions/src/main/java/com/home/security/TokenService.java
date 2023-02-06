@@ -8,7 +8,6 @@ import java.util.function.Function;
 public interface TokenService {
     DecodedJWT getDecodedToken(String token) throws JWTVerificationException;
     boolean checkToken(String token);
-
     String getRole(String token);
-
+    String getName(String token);
 }

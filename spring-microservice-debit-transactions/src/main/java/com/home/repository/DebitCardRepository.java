@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 @Transactional
 public interface DebitCardRepository extends JpaRepository<DebitCard, Integer> {
-    List<DebitCard> findByAccountId(int accountId);
+    List<DebitCard> findByAccountId(String accountId);
 }

@@ -38,28 +38,28 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         }
 
 //        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        String authHeader = Arrays.stream(request.getCookies())
+        String authCookie = Arrays.stream(request.getCookies())
                 .filter(cookie -> cookie.getName().equals("Authorization"))
                 .findFirst()
                 .get()
                 .getValue();
 
-        log.info(authHeader);
+        log.info(authCookie);
 
-        if(authHeader == null || authHeader.isBlank()) {
+        if(authCookie == null || authCookie.isBlank()) {
 //            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            log.warn("null");
+            log.info("cookie is null");
             response.sendRedirect("http://localhost:8082/login");
-        } else if(!checkAuthorization(authHeader)) {
+        } else if(!checkAuthorization(authCookie)) {
 //            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            log.warn("Check failed");
+            log.info("cookies check failed");
             response.sendRedirect("http://localhost:8082/login");
         } else {
             HashSet<GrantedAuthority> set = new HashSet<>();
-            set.add(new SimpleGrantedAuthority(tokenService.getRole(getToken(authHeader))));
+            set.add(new SimpleGrantedAuthority(tokenService.getRole(getToken(authCookie))));
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    null,
+                    tokenService.getName(getToken(authCookie)),
                     null,
                     set
             );

@@ -19,7 +19,7 @@ public class DebitDAO {
         debitCardRepository.save(card);
     }
 
-    public List<DebitCard> findAllDebitCardsByAccountId(Integer id) {
+    public List<DebitCard> findAllDebitCardsByAccountId(String id) {
         return debitCardRepository.findByAccountId(id);
     }
 
