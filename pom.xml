@@ -15,6 +15,7 @@
         <module>spring-microservice-saving-transactions</module>
         <module>spring-microservice-gateway</module>
         <module>spring-microservice-security</module>
+        <module>spring-microservice-account</module>
     </modules>
 
     <properties>
