@@ -14,6 +14,8 @@ import java.time.temporal.ChronoUnit;
 public class DefaultTokenService implements TokenService {
     @Value("${auth.jwt.secret}")
     private String secretKey;
+    @Value("${auth.jwt.refreshSecret}")
+    private String secretRefreshKey;
     private final AccountRepository accountRepository;
 
     public DefaultTokenService(AccountRepository accountRepository) {
@@ -26,6 +28,23 @@ public class DefaultTokenService implements TokenService {
 
         Instant now = Instant.now();
         Instant exp = now.plus(10, ChronoUnit.MINUTES);
+
+        return JWT.create()
+                .withIssuer("security-client") //Кто выдает токен
+                .withAudience("debit-client", "saving-client", "credit-client") //Для кого предназначается
+                .withSubject(login) //Поле по которому формируется токен
+                .withClaim("role", role)
+                .withIssuedAt(now) //Время формирования
+                .withExpiresAt(exp) //Длительность жизни
+                .sign(algorithm); //Алгоритм формирования
+    }
+
+    @Override
+    public String generateRefreshToken(String login, String role) {
+        Algorithm algorithm = Algorithm.HMAC256(secretRefreshKey);
+
+        Instant now = Instant.now();
+        Instant exp = now.plus(365, ChronoUnit.DAYS);
 
         return JWT.create()
                 .withIssuer("security-client") //Кто выдает токен

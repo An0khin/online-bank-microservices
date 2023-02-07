@@ -14,13 +14,19 @@ import org.springframework.stereotype.Service;
 public class DefaultTokenService implements TokenService {
     @Value("${auth.jwt.secret}")
     private String secret;
+    @Value("${auth.jwt.refreshSecret}")
+    private String refreshSecret;
 
     @Value("${spring.application.name}")
     private String applicationName;
 
     @Override
-    public DecodedJWT getDecodedToken(String token) {
-        Algorithm algorithm = Algorithm.HMAC256(secret);
+    public DecodedJWT getDecodedToken(String token, SecretType type) {
+        Algorithm algorithm = switch(type) {
+            case ACCESS -> Algorithm.HMAC256(secret);
+            case REFRESH -> Algorithm.HMAC256(refreshSecret);
+        };
+
         JWTVerifier verifier = JWT.require(algorithm).build();
 
         try {
@@ -34,8 +40,8 @@ public class DefaultTokenService implements TokenService {
     }
 
     @Override
-    public boolean checkToken(String token) {
-        DecodedJWT decodedJWT = getDecodedToken(token);
+    public boolean checkToken(String token, SecretType type) {
+        DecodedJWT decodedJWT = getDecodedToken(token, type);
 
         if(decodedJWT == null) {
             return false;
@@ -58,16 +64,16 @@ public class DefaultTokenService implements TokenService {
     }
 
     @Override
-    public String getRole(String token) {
-        DecodedJWT decodedJWT = getDecodedToken(token);
+    public String getRole(String token, SecretType type) {
+        DecodedJWT decodedJWT = getDecodedToken(token, type);
 
         return decodedJWT.getClaim("role").asString();
     }
 
     @Override
-    public String getName(String token) {
-        log.info("Username: " + getDecodedToken(token).getClaim("sub").asString());
+    public String getName(String token, SecretType type) {
+        log.info("Username: " + getDecodedToken(token, type).getClaim("sub").asString());
 
-        return getDecodedToken(token).getClaim("sub").asString();
+        return getDecodedToken(token, type).getClaim("sub").asString();
     }
 }

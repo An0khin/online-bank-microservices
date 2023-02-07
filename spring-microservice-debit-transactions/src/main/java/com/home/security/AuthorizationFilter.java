@@ -2,9 +2,9 @@ package com.home.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.ws.rs.core.HttpHeaders;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -25,15 +26,17 @@ import java.util.HashSet;
 public class AuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     private TokenService tokenService;
-
+    @Autowired
+    private RestTemplate template;
     @Value("${auth.enabled}")
     private boolean enabled;
+    public static final String LOGIN_URL = "http://localhost:8082/login";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        if(!enabled) {
+        if (!enabled) {
             filterChain.doFilter(request, response);
         }
 
@@ -44,22 +47,49 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 .get()
                 .getValue();
 
-        log.info(authCookie);
+        String refreshCookie = Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals("Refresh"))
+                .findFirst()
+                .get()
+                .getValue();
 
-        if(authCookie == null || authCookie.isBlank()) {
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            log.info("cookie is null");
-            response.sendRedirect("http://localhost:8082/login");
-        } else if(!checkAuthorization(authCookie)) {
-//            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            log.info("cookies check failed");
-            response.sendRedirect("http://localhost:8082/login");
+        log.info(authCookie);
+        log.info(refreshCookie);
+
+        if (refreshCookie == null || refreshCookie.isBlank() || !checkAuthorization(refreshCookie, SecretType.REFRESH)) {
+            response.sendRedirect(LOGIN_URL);
         } else {
+            if (authCookie == null || authCookie.isBlank() || !checkAuthorization(authCookie, SecretType.ACCESS)) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                log.info("Cookie is null or authorization failed");
+
+                String name = tokenService.getName(refreshCookie, SecretType.REFRESH);
+                String role = tokenService.getRole(refreshCookie, SecretType.REFRESH);
+
+                String newRefreshToken = template.getForObject("http://localhost:8082/auth/new_refresh_token?username={username}&role={role}",
+                        String.class,
+                        name,
+                        role);
+
+                String newAccessToken = template.getForObject("http://localhost:8082/auth/new_token?username={username}&role={role}",
+                        String.class,
+                        name,
+                        role);
+
+                response.addCookie(new Cookie("Authorization", newAccessToken));
+                response.addCookie(new Cookie("Refresh", newRefreshToken));
+
+                log.info("new token - " + newAccessToken);
+                authCookie = newAccessToken;
+                log.info("new auth cookie - " + authCookie);
+            }
+
+            log.info("new auth cookie after if - " + authCookie);
             HashSet<GrantedAuthority> set = new HashSet<>();
-            set.add(new SimpleGrantedAuthority(tokenService.getRole(getToken(authCookie))));
+            set.add(new SimpleGrantedAuthority(tokenService.getRole(getToken(authCookie), SecretType.ACCESS)));
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    tokenService.getName(getToken(authCookie)),
+                    tokenService.getName(getToken(authCookie), SecretType.ACCESS),
                     null,
                     set
             );
@@ -74,21 +104,25 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
             log.info("SecurityContextHolder has got authentication");
             filterChain.doFilter(request, response);
-        }
 
+        }
     }
 
     public String getToken(String auth) {
         return auth.substring(7);
     }
 
-    public boolean checkAuthorization(String auth) {
-        if(!auth.startsWith("Bearer_")) {
-            return false;
-        }
+    public boolean checkAuthorization(String auth, SecretType type) {
+        if (type == SecretType.ACCESS) {
+            if (!auth.startsWith("Bearer_")) {
+                return false;
+            }
 
-        String token = getToken(auth);
-        log.info(token);
-        return tokenService.checkToken(token);
+            String token = getToken(auth);
+            log.info(token);
+            return tokenService.checkToken(token, type);
+        } else {
+            return tokenService.checkToken(auth, type);
+        }
     }
 }

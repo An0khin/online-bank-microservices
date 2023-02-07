@@ -21,10 +21,12 @@ public class SpringConfig {
                         .uri("lb://saving-client"))
                 .route("register", r -> r.path("/register")
                         .filters(spec -> spec.rewritePath("/register", "/auth"))
-                        .uri("http://localhost:8086"))
+                        .uri("lb://security-client"))
                 .route("token", r -> r.path("/login")
                         .filters(spec -> spec.rewritePath("/login", "/auth/token"))
-                        .uri("http://localhost:8086"))
+                        .uri("lb://security-client"))
+                .route("new_token", r -> r.path("/auth/**")
+                        .uri("lb://security-client"))
                 .build();
     }
 }

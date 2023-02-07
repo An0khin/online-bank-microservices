@@ -4,7 +4,6 @@ import com.home.model.Account;
 import com.home.model.AccountService;
 import com.home.model.TokenService;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,22 +35,33 @@ public class AuthController {
     }
 
     @PostMapping("/token")
-    public void getToken(HttpServletRequest request,
-                           HttpServletResponse response,
-                           @RequestParam("username") String username,
-                           @RequestParam("password") String password,
-                           @RequestParam("role") String role) {
+    public void getToken(HttpServletResponse response,
+                         @RequestParam("username") String username,
+                         @RequestParam("password") String password,
+                         @RequestParam("role") String role) {
         Account account = new Account(username, password, "ROLE_" + role);
         accountService.checkCredentials(account);
 
-//        return ResponseEntity.ok(tokenService.generateToken(account.getLogin(), account.getRole()));
-        log.info(request.getRequestURI());
-
         response.addCookie(new Cookie("Authorization", "Bearer_" + tokenService.generateToken(account.getLogin(), account.getRole())));
+        response.addCookie(new Cookie("Refresh", tokenService.generateRefreshToken(account.getLogin(), account.getRole())));
         try {
             response.sendRedirect("http://localhost:8082/");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @GetMapping("/new_token")
+    @ResponseBody
+    public String getNewToken(@RequestParam("username") String username,
+                              @RequestParam("role") String role) {
+        return "Bearer_" + tokenService.generateToken(username, role);
+    }
+
+    @GetMapping("/new_refresh_token")
+    @ResponseBody
+    public String getNewRefreshToken(@RequestParam("username") String username,
+                                     @RequestParam("role") String role) {
+        return tokenService.generateRefreshToken(username, role);
     }
 }
