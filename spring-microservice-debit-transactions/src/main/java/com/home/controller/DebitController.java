@@ -3,12 +3,9 @@ package com.home.controller;
 import com.home.model.DebitCard;
 import com.home.model.Saving;
 import com.home.service.DebitDAO;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -166,60 +163,6 @@ public class DebitController {
 //        if(to.getReturnMoney() == 0) {
 //            transactionDAO.setClosedToCreditLoanByCreditCard(to);
 //        }
-//
-//        return "redirect:/";
-//    }
-
-    //LEARNING
-    @Value("${eureka.instance.instance-id}")
-    String instance;
-
-//    @GetMapping("/test")
-//    @ResponseBody
-//    public String test() {
-//        return "Hello on " + instance;
-//    }
-
-    @GetMapping("/debit")
-    @ResponseBody
-    public DebitCard debits(@RequestParam("id") int id,
-                            Model model) {
-//        model.addAttribute("card", debitCardRepository.findById(id).orElse(null));
-//        return "debitCards/view";
-        return debitDAO.findDebitCardById(id);
-    }
-
-    @GetMapping("/test")
-    @ResponseBody
-    public DebitCard anotherDebits(@RequestParam("id") int id) {
-        return new RestTemplate().getForObject("http://localhost:8082/debit-client/debit?id={id}",
-                DebitCard.class,
-                id);
-    }
-
-//    @GetMapping("/transfer/debitToSaving")
-//    public String transferDebitToSavingsPage(Model model, HttpServletRequest request) {
-//        Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
-//
-//        model.addAttribute("debitCards", cardDAO.findAllDebitCardsByAccountId(account.getId()));
-//        model.addAttribute("savings", cardDAO.findAllSavingsByAccountId(account.getId()));
-//
-//        model.addAttribute("ids", new Text());
-//        model.addAttribute("money", new Number());
-//
-//        return "debitCards/transferToSaving";
-//    }
-
-//    @PostMapping("/transfer/debitToSaving")
-//    public String transferDebitToSavings(@RequestParam("from") int from,
-//                                         @RequestParam("to") int to,
-//                                         @RequestParam("money") double number) {
-////        String[] strings = ids.getText().split(",");
-//
-//        DebitCard debitFrom = cardDAO.findDebitCardById(from);
-////        Saving to = cardDAO.findSavingById();
-//
-//        cardDAO.transferMoneyFromTo(from, to, money.getNumber().doubleValue());
 //
 //        return "redirect:/";
 //    }
