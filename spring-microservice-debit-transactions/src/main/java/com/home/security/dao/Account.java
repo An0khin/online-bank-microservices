@@ -1,4 +1,4 @@
-package com.home.security;
+package com.home.security.dao;
 
 import lombok.Value;
 

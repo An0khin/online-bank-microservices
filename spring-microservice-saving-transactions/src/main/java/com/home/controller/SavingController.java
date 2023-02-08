@@ -5,6 +5,7 @@ import com.home.model.Saving;
 import com.home.service.SavingDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,27 +45,26 @@ public class SavingController {
 
     @GetMapping("/get_all")
     @ResponseBody
-    public List<Saving> getAllByAccountId(@RequestParam("accountId") int accountId) {
+    public List<Saving> getAllByAccountId(@RequestParam("accountId") String accountId) {
         return savingDAO.findAllSavingsByAccountId(accountId);
     }
 
-    @GetMapping("/orderNewS")
+    @GetMapping("/order_new_s")
     public String createNewDebitCardPage(Model model) {
         model.addAttribute("flag", "");
 
         return "savings/createNew";
     }
 
-    @PostMapping("/orderNewS")
+    @PostMapping("/order_new_s")
     public String createNewSaving(@RequestParam(value = "agree", required = false, defaultValue = "false") boolean agree,
                                      Model model) {
         if(agree) {
-            //Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
-            int accountId = 1; //Find current user's id from another service
+            String accountId = SecurityContextHolder.getContext().getAuthentication().getName();
 
             savingDAO.saveSaving(new Saving(accountId));
 
-            return "redirect:http://localhost:8082/";
+            return "redirect:" + URL;
         } else {
             model.addAttribute("flag", "You haven't read the agreement!");
             return "savings/createNew";
@@ -80,8 +80,7 @@ public class SavingController {
 
     @GetMapping("/transfer/to_debit")
     public String transferSavingToDebitPage(Model model) {
-//        Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
-        int accountId = 1;
+        String accountId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         ResponseEntity<DebitCard[]> debitEntity = restTemplate.getForEntity(URL + "/debit/getAll?accountId={accountId}",
                 DebitCard[].class,
@@ -102,13 +101,13 @@ public class SavingController {
         Saving savingFrom = savingDAO.findSavingById(from);
 
         if (savingFrom.takeMoney(money)) {
-            restTemplate.getForObject(URL + "/deibt/accrue?id={id}&money={money}",
+            restTemplate.getForObject(URL + "/debit/accrue?id={id}&money={money}",
                     Boolean.class,
                     to, money);
             savingDAO.saveSaving(savingFrom);
         }
 
-        return "redirect:/";
+        return "redirect:" + URL;
     }
 
 //

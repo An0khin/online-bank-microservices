@@ -15,13 +15,12 @@ public class SavingDAO {
 
     public SavingDAO() {}
 
-    //Debit cards
     public void saveSaving(Saving saving) {
         savingRepository.save(saving);
     }
 
-    public List<Saving> findAllSavingsByAccountId(Integer id) {
-        return savingRepository.findByAccountId(id);
+    public List<Saving> findAllSavingsByAccountId(String accountId) {
+        return savingRepository.findByAccountId(accountId);
     }
 
     public Saving findSavingById(Integer id) {

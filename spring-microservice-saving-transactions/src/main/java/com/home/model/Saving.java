@@ -24,12 +24,12 @@ public class Saving extends Card {
     private Date date;
 
     @Column(name = "account_id", nullable = false)
-    private Integer accountId;
+    private String accountId;
 
     public Saving() {
     }
 
-    public Saving(Integer accountId) {
+    public Saving(String accountId) {
         this.money = 0.;
         this.percent = 3.;
         this.date = Date.valueOf(LocalDate.now());
@@ -78,11 +78,11 @@ public class Saving extends Card {
         this.date = date;
     }
 
-    public Integer getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Integer accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 

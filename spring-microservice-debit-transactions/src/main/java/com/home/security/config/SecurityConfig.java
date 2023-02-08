@@ -1,4 +1,4 @@
-package com.home.security;
+package com.home.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

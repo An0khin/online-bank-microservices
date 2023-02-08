@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 @Transactional
 public interface SavingRepository extends JpaRepository<Saving, Integer> {
-    List<Saving> findByAccountId(Integer accountId);
+    List<Saving> findByAccountId(String accountId);
 
 }
