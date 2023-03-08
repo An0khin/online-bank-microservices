@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Credit cards</title>
+</head>
+<body>
+    <div th:each="cc : ${creditCards}">
+        <a th:href="@{/creditCard(id=${cc.id})}" th:text="${cc.id}"></a>
+        <a th:href="@{/creditCard(id=${cc.id})}" th:text="${cc.returnMoney}"></a>
+        <a th:href="@{/creditCard(id=${cc.id})}" th:text="${cc.currentMoney}"></a>
+    </div>
+</body>
+</html>

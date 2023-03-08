@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" th:href="@{css/errorStyle.css}">
+    <title>Take credit</title>
+</head>
+<body>
+    <p th:if="${#lists.isEmpty(creditCards)}">Seems you don't have any credit card. Stay <a th:href="@{/newCreditRequest}">request</a> for new credit card</p>
+    <form th:method="POST" th:unless="${#lists.isEmpty(creditCards)}">
+        <label for="creditCard">Credit Card: </label>
+        <select name="creditCard" id="creditCard" th:field="${id.text}">
+            <option th:each="cc : ${creditCards}" th:value="${cc.id}" th:text="${cc.id} + ' ' + ${cc.moneyLimit} + ' ' + ${cc.percent} + '%'"/>
+        </select>
+
+        <label for="money">Money to borrow: </label>
+        <input type="number" name="money" id="money" th:field="${money.number}" placeholder="Money must be less or equals limit credit card">
+        <div class="error" th:if="${#fields.hasErrors('money.number')}" th:errors="${money.number}"/>
+
+        <input type="submit" value="Borrow">
+    </form>
+</body>
+</html>

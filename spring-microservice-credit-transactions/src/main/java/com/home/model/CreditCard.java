@@ -30,12 +30,12 @@ public class CreditCard extends Card {
     private Date date;
 
     @Column(name = "account_id", nullable = false)
-    private Integer accountId;
+    private String accountId;
 
     public CreditCard() {
     }
 
-    public CreditCard(Integer accountId) {
+    public CreditCard(String accountId) {
         this.accountId = accountId;
         this.date = Date.valueOf(LocalDate.now());
         this.returnMoney = 0.;
@@ -101,11 +101,11 @@ public class CreditCard extends Card {
         this.date = date;
     }
 
-    public Integer getAccount() {
+    public String getAccount() {
         return accountId;
     }
 
-    public void setAccount(Integer accountId) {
+    public void setAccount(String accountId) {
         this.accountId = accountId;
     }
 

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Credit request</title>
+</head>
+<body>
+    <form th:method="POST" th:object="${creditRequest}">
+        <label for="money">Desired limit: </label>
+        <input type="number" name="money" id="money" th:field="*{desiredLimit}">
+        <br>
+
+        <label for="percent">Desired percent: </label>
+        <input type="number" name="percent" id="percent" th:field="*{percent}" placeholder="From 3% to 50%">
+        <br>
+
+        <input type="submit" value="Request">
+    </form>
+</body>
+</html>
