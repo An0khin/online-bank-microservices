@@ -11,14 +11,14 @@
 <body>
     <p th:if="${#lists.isEmpty(creditCards)}">Seems you don't have any credit card. Stay <a th:href="@{/newCreditRequest}">request</a> for new credit card</p>
     <form th:method="POST" th:unless="${#lists.isEmpty(creditCards)}">
-        <label for="creditCard">Credit Card: </label>
-        <select name="creditCard" id="creditCard" th:field="${id.text}">
+        <label for="id">Credit Card: </label>
+        <select th:name="id" id="id">
             <option th:each="cc : ${creditCards}" th:value="${cc.id}" th:text="${cc.id} + ' ' + ${cc.moneyLimit} + ' ' + ${cc.percent} + '%'"/>
         </select>
 
         <label for="money">Money to borrow: </label>
-        <input type="number" name="money" id="money" th:field="${money.number}" placeholder="Money must be less or equals limit credit card">
-        <div class="error" th:if="${#fields.hasErrors('money.number')}" th:errors="${money.number}"/>
+        <input type="number" th:name="money" id="money" placeholder="Money must be less or equals limit credit card">
+        <div class="error" th:unless="${flag == ''}" th:text="${flag}"/>
 
         <input type="submit" value="Borrow">
     </form>
