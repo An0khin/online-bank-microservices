@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 @Transactional
 public interface CreditRepository extends JpaRepository<CreditCard, Integer> {
-    List<CreditCard> findByAccountId(Integer accountId);
+    List<CreditCard> findByAccountId(String accountId);
+
 }

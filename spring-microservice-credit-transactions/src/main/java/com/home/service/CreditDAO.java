@@ -3,48 +3,76 @@ package com.home.service;
 import com.home.model.CreditCard;
 import com.home.model.CreditLoan;
 import com.home.model.CreditRequest;
+import com.home.repository.CreditLoanRepository;
+import com.home.repository.CreditRepository;
+import com.home.repository.CreditRequestRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class CreditDAO {
-    public List<CreditCard> findAllCreditCardsByAccountId(String accountId) {
-        return null;
-    }
-
-    public CreditCard findCreditCardById(int id) {
-        return null;
-    }
+    @Autowired
+    private CreditRepository creditRepository;
+    @Autowired
+    private CreditRequestRepository creditRequestRepository;
+    @Autowired
+    private CreditLoanRepository creditLoanRepository;
 
     public void saveCreditLoan(CreditLoan creditLoan) {
+        creditLoanRepository.save(creditLoan);
     }
 
     public void saveCreditCard(CreditCard creditCard) {
-    }
-
-    public int findAllNotClosedCreditLoansByCreditCardId(Integer id) {
-        return 0;
+        creditRepository.save(creditCard);
     }
 
     public void saveCreditRequest(CreditRequest creditRequest) {
+        creditRequestRepository.save(creditRequest);
     }
 
-    public boolean takeMoneyById(int id, double money) {
-        return false;
+    public List<CreditCard> findAllCreditCardsByAccountId(String accountId) {
+        return creditRepository.findByAccountId(accountId);
     }
 
-    public boolean accrueMoneyById(int id, double money) {
-        return false;
+    public CreditCard findCreditCardById(int id) {
+        return creditRepository.findById(id).get();
+    }
+
+    public int findAllNotClosedCreditLoansByCreditCardId(Integer id) {
+        return (int) creditLoanRepository.countByClosedFalseAndCreditCard_Id(id);
     }
 
     public List<CreditRequest> findAcceptedCreditRequestsByAccountId(String accountId) {
-        return null;
+        return creditRequestRepository.findByAcceptedTrueAndBorrower(accountId);
     }
 
     public List<CreditRequest> findDeclinedCreditRequestsByAccountId(String accountId) {
-        return null;
+        return creditRequestRepository.findByViewedTrueAndAcceptedFalseAndBorrower(accountId);
     }
 
     public List<CreditRequest> findNotViewedCreditRequestsByAccountId(String accountId) {
-        return null;
+        return creditRequestRepository.findByViewedFalseAndBorrower(accountId);
+    }
+
+    public Boolean accrueMoneyById(int id, double money) {
+        CreditCard creditCard = findCreditCardById(id);
+        if(creditCard.accrueMoney(money)) {
+            saveCreditCard(creditCard);
+            return true;
+        }
+
+        return false;
+    }
+
+    public Boolean takeMoneyById(int id, double money) {
+        CreditCard creditCard = findCreditCardById(id);
+        if(creditCard.takeMoney(money)) {
+            saveCreditCard(creditCard);
+            return true;
+        }
+
+        return false;
     }
 }
