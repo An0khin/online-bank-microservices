@@ -35,4 +35,16 @@ public class CreditDAO {
     public boolean accrueMoneyById(int id, double money) {
         return false;
     }
+
+    public List<CreditRequest> findAcceptedCreditRequestsByAccountId(String accountId) {
+        return null;
+    }
+
+    public List<CreditRequest> findDeclinedCreditRequestsByAccountId(String accountId) {
+        return null;
+    }
+
+    public List<CreditRequest> findNotViewedCreditRequestsByAccountId(String accountId) {
+        return null;
+    }
 }

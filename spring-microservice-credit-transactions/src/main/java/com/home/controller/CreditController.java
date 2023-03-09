@@ -158,29 +158,26 @@ public class CreditController {
 
         return "redirect:/";
     }
-//
-//
-//    //Read the data
-//    @GetMapping("/allCreditCards")
-//    public String allCreditCardsPage(Model model,
-//                                     HttpServletRequest request) {
-//        Account account = accountDAO.findAccountByLogin(request.getUserPrincipal().getName());
-//
-//        model.addAttribute("creditCards", cardDAO.findAllCreditCardsByAccountId(account.getId()));
-//
-//        return "creditCards/allCreditCards";
-//    }
-//
-//    @GetMapping("/allCreditRequests")
-//    public String allCreditRequests(Model model,
-//                                    HttpServletRequest request) {
-//
-//        Integer id = accountDAO.findAccountByLogin(request.getUserPrincipal().getName()).getId();
-//
-//        model.addAttribute("accepted", cardDAO.findAcceptedCreditRequestsByAccountId(id));
-//        model.addAttribute("declined", cardDAO.findDeclinedCreditRequestsByAccountId(id));
-//        model.addAttribute("notViewed", cardDAO.findNotViewedCreditRequestsByAccountId(id));
-//
-//        return "creditCards/allCreditRequests";
-//    }
+
+    //Read the data
+    @GetMapping("/allCreditCards")
+    public String allCreditCardsPage(Model model) {
+        String accountId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        model.addAttribute("creditCards", creditDAO.findAllCreditCardsByAccountId(accountId));
+
+        return "creditCards/allCreditCards";
+    }
+
+    @GetMapping("/allCreditRequests")
+    public String allCreditRequests(Model model) {
+
+        String accountId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        model.addAttribute("accepted", creditDAO.findAcceptedCreditRequestsByAccountId(accountId));
+        model.addAttribute("declined", creditDAO.findDeclinedCreditRequestsByAccountId(accountId));
+        model.addAttribute("notViewed", creditDAO.findNotViewedCreditRequestsByAccountId(accountId));
+
+        return "creditCards/allCreditRequests";
+    }
 }

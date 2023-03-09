@@ -9,27 +9,27 @@
 </head>
 <body>
 <form th:method="POST">
-    <div th:object="${ids}">
+    <div>
         <label for="from">From: </label>
-        <select name="from" id="from" th:field="${ids.text}">
+        <select th:name="from" id="from">
             <option th:each="credit : ${credits}" th:value="${credit.id}" th:text="${credit.id} + ' ' + ${credit.currentMoney}"/>
         </select>
     </div>
 
     <br>
 
-    <div th:object="${ids}">
+    <div>
         <label for="to">To: </label>
-        <select name="to" id="to" th:field="${ids.text}">
+        <select th:name="to" id="to">
             <option th:each="debit : ${debitCards}" th:value="${debit.id}" th:text="${debit.id} + ' ' + ${debit.money}"/>
         </select>
     </div>
 
     <br>
 
-    <div th:object="${money}">
+    <div>
         <label for="money">Money: </label>
-        <input type="number" name="money" id="money" th:field="${money.number}">
+        <input type="number" th:name="money" id="money">
     </div>
 
     <br>
