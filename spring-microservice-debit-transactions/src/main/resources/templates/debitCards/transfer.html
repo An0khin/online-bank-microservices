@@ -2,17 +2,18 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>Transfer</title>
 </head>
 <body>
 <form th:method="POST">
     <div>
         <label for="from">From:</label>
-        <select th:name="from" id="from">
-            <option th:each="debitCard : ${debitCards}" th:value="${debitCard.id}" th:text="${debitCard.id} + ' ' + ${debitCard.money}"/>
+        <select id="from" th:name="from">
+            <option th:each="debitCard : ${debitCards}" th:text="${debitCard.id} + ' ' + ${debitCard.money}"
+                    th:value="${debitCard.id}"/>
         </select>
     </div>
 
@@ -20,18 +21,19 @@
 
     <div>
         <label for="to">To:</label>
-        <input type="text" id="to" th:name="to" list="debitCards">
+        <input id="to" list="debitCards" th:name="to" type="text">
     </div>
 
-    <datalist name="debitCards" id="debitCards">
-        <option th:each="debitCard : ${debitCards}" th:value="${debitCard.id}" th:text="${debitCard.id} + ' ' + ${debitCard.money}"/>
+    <datalist id="debitCards" name="debitCards">
+        <option th:each="debitCard : ${debitCards}" th:text="${debitCard.id} + ' ' + ${debitCard.money}"
+                th:value="${debitCard.id}"/>
     </datalist>
 
     <br>
 
     <div>
         <label for="money">Money:</label>
-        <input type="number" id="money" th:name="money"/>
+        <input id="money" th:name="money" type="number"/>
     </div>
 
     <br>

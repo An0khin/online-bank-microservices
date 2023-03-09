@@ -2,26 +2,26 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>Log in</title>
 </head>
 <body>
-    <form th:method="post">
-        <label for="username">Email: </label>
-        <input type="text" th:name="username" id="username">
+<form th:method="post">
+    <label for="username">Email: </label>
+    <input id="username" th:name="username" type="text">
 
-        <label for="password">Password: </label>
-        <input type="text" th:name="password" id="password">
+    <label for="password">Password: </label>
+    <input id="password" th:name="password" type="text">
 
-        <label for="role">Role: </label>
-        <select name="role" id="role">
-            <option value="USER">USER</option>
-            <option value="ADMIN">ADMIN</option>
-        </select>
+    <label for="role">Role: </label>
+    <select id="role" name="role">
+        <option value="USER">USER</option>
+        <option value="ADMIN">ADMIN</option>
+    </select>
 
-        <input type="submit" value="Login">
-    </form>
+    <input type="submit" value="Login">
+</form>
 </body>
 </html>

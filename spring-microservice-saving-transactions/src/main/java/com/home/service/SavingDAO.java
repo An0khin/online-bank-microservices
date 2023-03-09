@@ -1,6 +1,5 @@
 package com.home.service;
 
-import com.home.model.DebitCard;
 import com.home.model.Saving;
 import com.home.repository.SavingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,8 @@ public class SavingDAO {
     @Autowired
     private SavingRepository savingRepository;
 
-    public SavingDAO() {}
+    public SavingDAO() {
+    }
 
     public void saveSaving(Saving saving) {
         savingRepository.save(saving);
@@ -39,7 +39,7 @@ public class SavingDAO {
 
     public Boolean takeMoneyById(int id, double money) {
         Saving saving = findSavingById(id);
-        if (saving.takeMoney(money)) {
+        if(saving.takeMoney(money)) {
             saveSaving(saving);
             return true;
         }

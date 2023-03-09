@@ -26,19 +26,19 @@ import java.util.HashSet;
 @Component
 @Slf4j
 public class AuthorizationFilter extends OncePerRequestFilter {
+    public static final String LOGIN_URL = "http://localhost:8082/login";
     @Autowired
     private TokenService tokenService;
     @Autowired
     private RestTemplate template;
     @Value("${auth.enabled}")
     private boolean enabled;
-    public static final String LOGIN_URL = "http://localhost:8082/login";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        if (!enabled) {
+        if(!enabled) {
             filterChain.doFilter(request, response);
         }
 
@@ -58,10 +58,10 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         log.info(authCookie);
         log.info(refreshCookie);
 
-        if (refreshCookie == null || refreshCookie.isBlank() || !checkAuthorization(refreshCookie, SecretType.REFRESH)) {
+        if(refreshCookie == null || refreshCookie.isBlank() || !checkAuthorization(refreshCookie, SecretType.REFRESH)) {
             response.sendRedirect(LOGIN_URL);
         } else {
-            if (authCookie == null || authCookie.isBlank() || !checkAuthorization(authCookie, SecretType.ACCESS)) {
+            if(authCookie == null || authCookie.isBlank() || !checkAuthorization(authCookie, SecretType.ACCESS)) {
 //            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 log.info("Cookie is null or authorization failed");
 
@@ -115,8 +115,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     }
 
     public boolean checkAuthorization(String auth, SecretType type) {
-        if (type == SecretType.ACCESS) {
-            if (!auth.startsWith("Bearer_")) {
+        if(type == SecretType.ACCESS) {
+            if(!auth.startsWith("Bearer_")) {
                 return false;
             }
 

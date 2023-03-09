@@ -46,7 +46,7 @@ public class AuthController {
         response.addCookie(new Cookie("Refresh", tokenService.generateRefreshToken(account.getLogin(), account.getRole())));
         try {
             response.sendRedirect("http://localhost:8082/");
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
         }
     }

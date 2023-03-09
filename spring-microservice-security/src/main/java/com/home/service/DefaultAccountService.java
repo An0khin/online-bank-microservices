@@ -1,11 +1,11 @@
 package com.home.service;
 
+import com.home.dao.AccountEntity;
+import com.home.model.Account;
+import com.home.model.AccountService;
 import com.home.model.exception.LoginException;
 import com.home.model.exception.RegistrationException;
-import com.home.model.Account;
-import com.home.dao.AccountEntity;
 import com.home.repository.AccountRepository;
-import com.home.model.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,7 @@ import java.util.Optional;
 public class DefaultAccountService implements AccountService {
     @Autowired
     private AccountRepository accountRepository;
+
     @Override
     public void register(Account account) {
         if(accountRepository.findByLogin(account.getLogin()).isPresent()) {
@@ -37,7 +38,7 @@ public class DefaultAccountService implements AccountService {
         AccountEntity accountEntity = optionalAccount.get();
 
         if(!BCrypt.checkpw(account.getPassword(), accountEntity.getPassword()) ||
-            !BCrypt.checkpw(account.getRole() , accountEntity.getRole())) {
+                !BCrypt.checkpw(account.getRole(), accountEntity.getRole())) {
             throw new LoginException("Password is incorrect");
         }
     }

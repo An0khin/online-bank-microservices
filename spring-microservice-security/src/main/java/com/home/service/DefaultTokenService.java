@@ -12,11 +12,11 @@ import java.time.temporal.ChronoUnit;
 
 @Service
 public class DefaultTokenService implements TokenService {
+    private final AccountRepository accountRepository;
     @Value("${auth.jwt.secret}")
     private String secretKey;
     @Value("${auth.jwt.refreshSecret}")
     private String secretRefreshKey;
-    private final AccountRepository accountRepository;
 
     public DefaultTokenService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;

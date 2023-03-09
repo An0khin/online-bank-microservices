@@ -16,8 +16,8 @@ server:
 
 logging:
   level:
-#    web: debug
-#    root: debug
+    #    web: debug
+    #    root: debug
     sql: debug
 
 auth:

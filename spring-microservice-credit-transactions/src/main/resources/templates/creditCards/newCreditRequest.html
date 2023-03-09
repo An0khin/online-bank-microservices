@@ -2,22 +2,22 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>Credit request</title>
 </head>
 <body>
-    <form th:method="POST" th:object="${creditRequest}">
-        <label for="money">Desired limit: </label>
-        <input type="number" name="money" id="money" th:field="*{desiredLimit}">
-        <br>
+<form th:method="POST" th:object="${creditRequest}">
+    <label for="money">Desired limit: </label>
+    <input id="money" name="money" th:field="*{desiredLimit}" type="number">
+    <br>
 
-        <label for="percent">Desired percent: </label>
-        <input type="number" name="percent" id="percent" th:field="*{percent}" placeholder="From 3% to 50%">
-        <br>
+    <label for="percent">Desired percent: </label>
+    <input id="percent" name="percent" placeholder="From 3% to 50%" th:field="*{percent}" type="number">
+    <br>
 
-        <input type="submit" value="Request">
-    </form>
+    <input type="submit" value="Request">
+</form>
 </body>
 </html>

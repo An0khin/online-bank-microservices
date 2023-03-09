@@ -2,19 +2,19 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>Credit card</title>
 </head>
 <body>
-    <p th:text="${card.id}"></p>
-    <p th:text="${card.currentMoney}"></p>
-    <p th:text="${card.returnMoney}"></p>
-    <p th:text="${card.percent} + '%'"></p>
+<p th:text="${card.id}"></p>
+<p th:text="${card.currentMoney}"></p>
+<p th:text="${card.returnMoney}"></p>
+<p th:text="${card.percent} + '%'"></p>
 
 <!--    <a th:href="">Take credit</a>-->
-    <a th:href="@{/debit/transfer/to_credit}">Accrue</a>
-    <a th:href="@{/credit/transfer/to_debit}">Transfer to debit</a>
+<a th:href="@{/debit/transfer/to_credit}">Accrue</a>
+<a th:href="@{/credit/transfer/to_debit}">Transfer to debit</a>
 </body>
 </html>

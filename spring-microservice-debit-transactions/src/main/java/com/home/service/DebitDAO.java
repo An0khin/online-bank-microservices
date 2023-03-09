@@ -12,7 +12,8 @@ public class DebitDAO {
     @Autowired
     private DebitCardRepository debitCardRepository;
 
-    public DebitDAO() {}
+    public DebitDAO() {
+    }
 
     //Debit cards
     public void saveDebitCard(DebitCard card) {

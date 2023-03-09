@@ -16,13 +16,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/credit")
 public class CreditController {
+    static final String URL = "http://localhost:8082";
     @Autowired
     RestTemplate restTemplate;
     @Autowired
     CreditDAO creditDAO;
-
-    static final String URL = "http://localhost:8082";
-
 
     @GetMapping("/accrue")
     @ResponseBody

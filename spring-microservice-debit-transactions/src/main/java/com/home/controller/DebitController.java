@@ -18,13 +18,11 @@ import java.util.List;
 @RequestMapping("/debit")
 @Slf4j
 public class DebitController {
+    static final String URL = "http://localhost:8082";
     @Autowired
     RestTemplate restTemplate;
     @Autowired
     DebitDAO debitDAO;
-
-    static final String URL = "http://localhost:8082";
-
 
     @GetMapping("/accrue")
     @ResponseBody
@@ -62,7 +60,7 @@ public class DebitController {
     @PostMapping("/order_new_dc")
     public String createNewDebitCard(@RequestParam(value = "agree", required = false, defaultValue = "false") boolean agree,
                                      Model model) {
-        if (agree) {
+        if(agree) {
             String accountId = SecurityContextHolder.getContext().getAuthentication().getName(); //Find current user's id from another service
 
             debitDAO.saveDebitCard(new DebitCard(accountId));
@@ -97,7 +95,7 @@ public class DebitController {
         DebitCard debitFrom = debitDAO.findDebitCardById(from);
         DebitCard debitTo = debitDAO.findDebitCardById(to);
 
-        if (debitFrom.takeMoney(money)) {
+        if(debitFrom.takeMoney(money)) {
             debitTo.accrueMoney(money);
             debitDAO.saveDebitCard(debitFrom);
             debitDAO.saveDebitCard(debitTo);
@@ -128,7 +126,7 @@ public class DebitController {
                                          @RequestParam("money") double money) {
         DebitCard debitFrom = debitDAO.findDebitCardById(from);
 
-        if (debitFrom.takeMoney(money)) {
+        if(debitFrom.takeMoney(money)) {
             restTemplate.getForObject(URL + "/saving/accrue?id={id}&money={money}",
                     Boolean.class,
                     to, money);

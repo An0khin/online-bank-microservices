@@ -16,12 +16,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/saving")
 public class SavingController {
+    static final String URL = "http://localhost:8082";
     @Autowired
     RestTemplate restTemplate;
     @Autowired
     SavingDAO savingDAO;
-
-    static final String URL = "http://localhost:8082";
 
     @GetMapping("/accrue")
     @ResponseBody
@@ -58,7 +57,7 @@ public class SavingController {
 
     @PostMapping("/order_new_s")
     public String createNewSaving(@RequestParam(value = "agree", required = false, defaultValue = "false") boolean agree,
-                                     Model model) {
+                                  Model model) {
         if(agree) {
             String accountId = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -100,7 +99,7 @@ public class SavingController {
                                          @RequestParam("money") double money) {
         Saving savingFrom = savingDAO.findSavingById(from);
 
-        if (savingFrom.takeMoney(money)) {
+        if(savingFrom.takeMoney(money)) {
             restTemplate.getForObject(URL + "/debit/accrue?id={id}&money={money}",
                     Boolean.class,
                     to, money);

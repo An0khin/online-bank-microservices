@@ -2,39 +2,41 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>Transfer to Debit card</title>
 </head>
 <body>
-    <form th:method="POST">
-        <div>
-            <label for="from">From: </label>
-            <select th:name="from" id="from">
-                <option th:each="saving : ${savings}" th:value="${saving.id}" th:text="${saving.id} + ' ' + ${saving.money}"/>
-            </select>
-        </div>
+<form th:method="POST">
+    <div>
+        <label for="from">From: </label>
+        <select id="from" th:name="from">
+            <option th:each="saving : ${savings}" th:text="${saving.id} + ' ' + ${saving.money}"
+                    th:value="${saving.id}"/>
+        </select>
+    </div>
 
-        <br>
+    <br>
 
-        <div>
-            <label for="to">To: </label>
-            <select th:name="to" id="to">
-                <option th:each="debit : ${debitCards}" th:value="${debit.id}" th:text="${debit.id} + ' ' + ${debit.money}"/>
-            </select>
-        </div>
+    <div>
+        <label for="to">To: </label>
+        <select id="to" th:name="to">
+            <option th:each="debit : ${debitCards}" th:text="${debit.id} + ' ' + ${debit.money}"
+                    th:value="${debit.id}"/>
+        </select>
+    </div>
 
-        <br>
+    <br>
 
-        <div>
-            <label for="money">Money: </label>
-            <input type="number" th:name="money" id="money">
-        </div>
+    <div>
+        <label for="money">Money: </label>
+        <input id="money" th:name="money" type="number">
+    </div>
 
-        <br>
+    <br>
 
-        <input type="submit" value="Transfer">
-    </form>
+    <input type="submit" value="Transfer">
+</form>
 </body>
 </html>

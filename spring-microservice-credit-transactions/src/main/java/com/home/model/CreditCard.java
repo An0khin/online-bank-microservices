@@ -1,8 +1,8 @@
 package com.home.model;
 
+import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -122,7 +122,7 @@ public class CreditCard extends Card {
 
     @Override
     public boolean takeMoney(Double takingMoney) {
-        if (this.currentMoney >= takingMoney) {
+        if(this.currentMoney >= takingMoney) {
             this.currentMoney -= takingMoney;
 
             return true;
@@ -132,7 +132,7 @@ public class CreditCard extends Card {
     }
 
     public boolean takeCreditMoney(Double money) {
-        if (this.moneyLimit >= money) {
+        if(this.moneyLimit >= money) {
             this.currentMoney += money;
             this.returnMoney += money + (money * percent / 100);
 

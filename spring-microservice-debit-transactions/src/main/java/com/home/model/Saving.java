@@ -2,7 +2,6 @@ package com.home.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.persistence.*;
 import java.sql.Date;
 
 public class Saving {
@@ -19,6 +18,7 @@ public class Saving {
 
     public Saving() {
     }
+
     @Override
     public String toString() {
         return "Saving{" +
