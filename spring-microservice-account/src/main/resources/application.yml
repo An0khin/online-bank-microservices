@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: account-client
+  datasource:
+    url: jdbc:postgresql://localhost:5432/onlinebankm
+    password: 1234
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 0
+
+logging:
+  level:
+    sql: debug
+
+auth:
+  jwt:
+    secret: 5YfbJBwLlGCQuFnsvJ2p9LRpoqNUCb1e;
+    refreshSecret: k2FAYug3aUXggRLauzAp8CgpCIowiEnS
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8080/eureka
+  instance:
+    instance-id: ${spring.application.name}:${random.value}
