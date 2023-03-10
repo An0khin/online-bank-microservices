@@ -10,12 +10,20 @@ spring:
     hibernate:
       ddl-auto: update
 
+
 server:
   port: 0
 
 logging:
   level:
+    #    web: debug
+    #    root: debug
     sql: debug
+
+auth:
+  jwt:
+    secret: 5YfbJBwLlGCQuFnsvJ2p9LRpoqNUCb1e;
+    refreshSecret: k2FAYug3aUXggRLauzAp8CgpCIowiEnS
 
 eureka:
   client:
