@@ -7,7 +7,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,18 +14,20 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @Slf4j
 public class AuthController {
+    public static String URL = "http://localhost:8082/";
     @Autowired
     private AccountService accountService;
     @Autowired
     private TokenService tokenService;
 
     @PostMapping
-    public @ResponseBody ResponseEntity<String> register(@RequestParam("username") String username,
-                                                         @RequestParam("password") String password,
-                                                         @RequestParam("role") String role) {
+    public String register(@RequestParam("username") String username,
+                           @RequestParam("password") String password,
+                           @RequestParam("role") String role) {
         Account account = new Account(username, password, role);
         accountService.register(account);
-        return ResponseEntity.ok("Registered");
+        return "redirect:" + URL;
+//        return ResponseEntity.ok("Registered");
     }
 
     @GetMapping("/token")
@@ -45,7 +46,7 @@ public class AuthController {
         response.addCookie(new Cookie("Authorization", "Bearer_" + tokenService.generateToken(account.getLogin(), account.getRole())));
         response.addCookie(new Cookie("Refresh", tokenService.generateRefreshToken(account.getLogin(), account.getRole())));
         try {
-            response.sendRedirect("http://localhost:8082/");
+            response.sendRedirect(URL);
         } catch(Exception e) {
             e.printStackTrace();
         }
