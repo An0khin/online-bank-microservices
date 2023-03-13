@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" th:href="@{/css/errorStyle.css}">
+    <title>Register</title>
+</head>
+<body>
+    <form th:method="POST">
+        <div th:object="${newPassport}">
+            <label for="name">Name:</label>
+            <input type="text" th:field="*{name}" id="name" name="name">
+
+            <br>
+
+            <label for="surname">Surname:</label>
+            <input type="text" th:field="*{surname}" id="surname" name="surname">
+
+            <br>
+
+            <label for="birth">Date of birth:</label>
+            <input type="date" id="birth" th:field="*{dateBirth}" name="dateBirth">
+
+            <br>
+
+            <label for="series">Series:</label>
+            <input type="number" th:field="*{series}" id="series" name="series">
+            <div th:if="${#fields.hasErrors('series')}" th:errors="*{series}"></div>
+
+            <br>
+
+            <label for="number">Number:</label>
+            <input type="number" id="number" th:field="*{number}" name="number">
+            <div th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></div>
+<!--            <div th:if="${#fields.hasErrors('login')}">-->
+<!--                <p>Login error</p>-->
+<!--            </div>-->
+
+            <!--    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>-->
+            <!--    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>-->
+            <br>
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        <div th:object="${newAccount}">
+<!--            <div th:if="${#fields.hasErrors('*')}">-->
+<!--                <p th:each="err : ${#fields.errors('*')}" th:text="${err.}"></p>-->
+<!--            </div>-->
+
+            <label for="login">Login:</label>
+            <input type="email" th:field="*{login}" id="login" name="login">
+            <div class="error" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"/>
+
+            <br>
+
+            <label for="password">Password:</label>
+            <input type="password" th:field="*{password}" id="password" name="password">
+            <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"/>
+
+            <br>
+
+            <label for="role">Role:</label>
+            <select name="role" id="role" th:field="*{role}">
+                <option value="ADMIN">ADMIN</option>
+                <option value="USER">USER</option>
+            </select>
+
+            <!--    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>-->
+            <!--    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>-->
+        </div>
+
+
+        <input type="submit" value="Create"/>
+    </form>
+</body>
+</html>

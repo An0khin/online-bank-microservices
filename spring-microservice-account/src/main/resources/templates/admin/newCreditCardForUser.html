@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>New credit card for user</title>
+</head>
+<body>
+    <form th:method="POST">
+        <label for="limit">Desired limit: </label>
+        <input type="number" name="limit" id="limit" th:field="${limit_percent.text}">
+        <br>
+
+        <label for="percent">Desired percent: </label>
+        <input type="number" name="percent" id="percent" th:field="${limit_percent.text}" placeholder="From 3% to 50%">
+        <br>
+
+        <input type="submit" value="Create">
+    </form>
+</body>
+</html>

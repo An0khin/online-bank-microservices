@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Facilities</title>
+</head>
+<body>
+    <p th:text="${account.passport.name} + ' ' + ${account.passport.surname}"/>
+    <br>
+    <a th:href="@{/admin/change}">Change account data</a>
+    <br>
+
+    <a th:href="@{/admin/allCards}">All cards</a>
+    <br>
+    <a th:href="@{/admin/debitHistory}">Transaction history</a>
+    <br>
+    <a th:href="@{/admin/allUserCreditRequests}">All credit requests</a>
+    <br>
+
+    <a th:href="@{/admin/orderNewDC}">Order new Debit Card</a>
+    <br>
+    <a th:href="@{/admin/orderNewS}">Order new Saving</a>
+    <br>
+    <a th:href="@{/admin/orderNewCC}">Order new Credit Card</a>
+    <br>
+
+    <a th:href="@{/admin/delete}">Delete</a>
+    <br>
+</body>
+</html>

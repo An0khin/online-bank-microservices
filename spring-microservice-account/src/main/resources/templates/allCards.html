@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>All cards</title>
+</head>
+<body>
+    <p>Debit cards: </p>
+    <div th:each="dc : ${debits}">
+        <a th:href="@{/debitCard(id=${cc.id})}" th:text="${dc.id} + ' ' + ${dc.money} + '$ ' + ${dc.date}"></a>
+    </div>
+    <hr>
+
+    <p>Savings: </p>
+    <div th:each="s : ${savings}">
+        <a th:href="@{/saving(id=${cc.id})}" th:text="${s.id} + ' ' + ${s.money} + '$ ' + ${s.percent} + '% ' + ${s.date}"></a>
+    </div>
+    <hr>
+
+    <p>Credit cards: </p>
+    <div th:each="cc : ${credits}">
+        <a th:href="@{/creditCard(id=${cc.id})}" th:text="${cc.id} + ' ' + ${cc.currentMoney} + '$ ' + ${cc.percent} + '% ' + ${cc.returnMoney} + '$ ' + ${cc.date}"></a>
+    </div>
+    <hr>
+
+    <a th:href="@{/}">HOME</a>
+</body>
+</html>

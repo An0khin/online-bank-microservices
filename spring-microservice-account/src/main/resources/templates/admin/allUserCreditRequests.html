@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>All user credit requests</title>
+</head>
+<body>
+    <div>
+        <p>ACCEPTED CREDIT REQUESTS</p>
+        <div th:each="cr : ${accepted}">
+            <p>Limit: <span th:text="${cr.desiredLimit}"/></p>
+            <p>Percent: <span th:text="${cr.percent}"/></p>
+            <p th:if="${cr.viewed}">Accepted: <span th:if="${cr.accepted}">&#9989;</span><span th:if="${not cr.accepted}">&#10060;</span></p>
+            <p th:if="${not cr.viewed}">Viewed: &#10060;</p>
+        </div>
+
+        <p>NOT VIEWED CREDIT REQUESTS</p>
+        <div th:each="cr : ${notViewed}">
+            <p>Limit: <span th:text="${cr.desiredLimit}"/></p>
+            <p>Percent: <span th:text="${cr.percent}"/></p>
+            <p th:if="${cr.viewed}">Accepted: <span th:if="${cr.accepted}">&#9989;</span><span th:if="${not cr.accepted}">&#10060;</span></p>
+            <p th:if="${not cr.viewed}">Viewed: &#10060;</p>
+            <a th:href="@{/admin/creditRequest(requestId = ${cr.id})}">View</a>
+        </div>
+
+        <p>DECLINED CREDIT REQUESTS</p>
+        <div th:each="cr : ${declined}">
+            <p>Limit: <span th:text="${cr.desiredLimit}"/></p>
+            <p>Percent: <span th:text="${cr.percent}"/></p>
+            <p th:if="${cr.viewed}">Accepted: <span th:if="${cr.accepted}">&#9989;</span><span th:if="${not cr.accepted}">&#10060;</span></p>
+            <p th:if="${not cr.viewed}">Viewed: &#10060;</p>
+        </div>
+    </div>
+</body>
+</html>
