@@ -19,6 +19,8 @@ public class SpringConfig {
                         .uri("lb://debit-client"))
                 .route("saving-route", r -> r.path("/saving/**")
                         .uri("lb://saving-client"))
+                .route("credit-route", r -> r.path("/credit/**")
+                        .uri("lb://credit-client"))
                 .route("register", r -> r.path("/register")
                         .filters(spec -> spec.rewritePath("/register", "/auth"))
                         .uri("lb://security-client"))

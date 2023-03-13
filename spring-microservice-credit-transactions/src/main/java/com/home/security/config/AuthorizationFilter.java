@@ -43,6 +43,11 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         }
 
 //        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if(request.getCookies() == null) {
+            response.sendRedirect(LOGIN_URL);
+            return;
+        }
+
         String authCookie = Arrays.stream(request.getCookies())
                 .filter(cookie -> cookie.getName().equals("Authorization"))
                 .findFirst()

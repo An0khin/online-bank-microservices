@@ -103,7 +103,7 @@ public class CreditController {
         return "redirect:" + URL;
     }
 
-    @GetMapping("/newCreditRequest")
+    @GetMapping("/new_credit_request")
     public String newCreditRequestPage(Model model) {
 
         model.addAttribute("creditRequest", new CreditRequest());
@@ -111,7 +111,7 @@ public class CreditController {
         return "creditCards/newCreditRequest";
     }
 
-    @PostMapping("/newCreditRequest")
+    @PostMapping("/new_credit_request")
     public String newCreditRequest(@ModelAttribute("creditRequest") CreditRequest creditRequest) {
         String accountId = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -119,10 +119,10 @@ public class CreditController {
 
         creditDAO.saveCreditRequest(creditRequest);
 
-        return "redirect:/";
+        return "redirect:" + URL;
     }
 
-    @GetMapping("/takeCredit")
+    @GetMapping("/take_credit")
     public String takeCreditPage(Model model) {
 
         String accountId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -134,7 +134,7 @@ public class CreditController {
         return "creditCards/takeCredit";
     }
 
-    @PostMapping("/takeCredit")
+    @PostMapping("/take_credit")
     public String takeCredit(@RequestParam("id") int id,
                              @RequestParam("money") double money,
                              Model model) {
@@ -154,11 +154,11 @@ public class CreditController {
         creditDAO.saveCreditLoan(new CreditLoan(creditCard, money));
         creditDAO.saveCreditCard(creditCard);
 
-        return "redirect:/";
+        return "redirect:" + URL;
     }
 
     //Read the data
-    @GetMapping("/allCreditCards")
+    @GetMapping("/all_credit_cards")
     public String allCreditCardsPage(Model model) {
         String accountId = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -167,7 +167,7 @@ public class CreditController {
         return "creditCards/allCreditCards";
     }
 
-    @GetMapping("/allCreditRequests")
+    @GetMapping("/all_credit_requests")
     public String allCreditRequests(Model model) {
 
         String accountId = SecurityContextHolder.getContext().getAuthentication().getName();
