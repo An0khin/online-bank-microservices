@@ -3,5 +3,5 @@ package com.home.model;
 public interface AccountService {
     void register(Account account); //Регистрация юзера
 
-    void checkCredentials(Account account); //Проверка аутентификационных данных
+    Account getAccount(String username, String password); //Получение аккаунта по логину и паролю
 }

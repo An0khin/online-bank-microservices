@@ -23,5 +23,8 @@ public class AccountEntity {
 
     @Column(nullable = false)
     private String role;
+
+    @Column(nullable = false)
+    private int passport;
 }
 

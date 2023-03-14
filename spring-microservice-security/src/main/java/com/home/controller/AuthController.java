@@ -23,8 +23,9 @@ public class AuthController {
     @PostMapping
     public String register(@RequestParam("username") String username,
                            @RequestParam("password") String password,
-                           @RequestParam("role") String role) {
-        Account account = new Account(username, password, role);
+                           @RequestParam("role") String role,
+                           @RequestParam("passport") int passport) {
+        Account account = new Account(username, password, role, passport);
         accountService.register(account);
         return "redirect:" + URL;
 //        return ResponseEntity.ok("Registered");
@@ -38,10 +39,9 @@ public class AuthController {
     @PostMapping("/token")
     public void getToken(HttpServletResponse response,
                          @RequestParam("username") String username,
-                         @RequestParam("password") String password,
-                         @RequestParam("role") String role) {
-        Account account = new Account(username, password, "ROLE_" + role);
-        accountService.checkCredentials(account);
+                         @RequestParam("password") String password) {
+//        Account account = new Account(username, password, "ROLE_" + role, 0);
+        Account account = accountService.getAccount(username, password);
 
         response.addCookie(new Cookie("Authorization", "Bearer_" + tokenService.generateToken(account.getLogin(), account.getRole())));
         response.addCookie(new Cookie("Refresh", tokenService.generateRefreshToken(account.getLogin(), account.getRole())));

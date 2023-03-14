@@ -7,4 +7,5 @@ public class Account {
     String login;
     String password;
     String role;
+    int passport;
 }

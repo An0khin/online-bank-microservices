@@ -25,21 +25,26 @@ public class DefaultAccountService implements AccountService {
 
         String password_hash = BCrypt.hashpw(account.getPassword(), BCrypt.gensalt());
         String role_hash = BCrypt.hashpw(account.getRole(), BCrypt.gensalt());
-        accountRepository.save(new AccountEntity(account.getLogin(), password_hash, role_hash));
+        accountRepository.save(new AccountEntity(account.getLogin(), password_hash, role_hash, account.getPassport()));
     }
 
     @Override
-    public void checkCredentials(Account account) {
-        Optional<AccountEntity> optionalAccount = accountRepository.findByLogin(account.getLogin());
+    public Account getAccount(String username, String password) {
+        Optional<AccountEntity> optionalAccount = accountRepository.findByLogin(username);
         if(optionalAccount.isEmpty()) {
-            throw new LoginException(String.format("Account with %s login doesn't exists", account.getLogin()));
+            throw new LoginException(String.format("Account with %s login doesn't exists", username));
         }
 
         AccountEntity accountEntity = optionalAccount.get();
 
-        if(!BCrypt.checkpw(account.getPassword(), accountEntity.getPassword()) ||
-                !BCrypt.checkpw(account.getRole(), accountEntity.getRole())) {
+        if(!BCrypt.checkpw(password, accountEntity.getPassword())) {
             throw new LoginException("Password is incorrect");
         }
+
+        return new Account(
+                accountEntity.getLogin(),
+                accountEntity.getPassword(),
+                accountEntity.getRole(),
+                accountEntity.getPassport());
     }
 }
