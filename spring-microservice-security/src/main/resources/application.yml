@@ -1,24 +1,9 @@
 spring:
   application:
     name: security-client
-  datasource:
-    url: jdbc:postgresql://localhost:5432/onlinebankm
-    password: 1234
-    username: postgres
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create
-
 
 server:
   port: 8086
-
-logging:
-  level:
-    #    web: debug
-    #    root: debug
-    sql: debug
 
 auth:
   jwt:
