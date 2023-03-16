@@ -1,4 +1,4 @@
-package com.home.model;
+package com.home.service;
 
 public interface TokenService {
     String generateToken(String login, String role);
