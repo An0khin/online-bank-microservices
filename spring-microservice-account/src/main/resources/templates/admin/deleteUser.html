@@ -2,21 +2,21 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <link rel="stylesheet" th:href="@{/css/errorStyle.css}">
     <title>Delete</title>
 </head>
 <body>
-    <form th:method="DELETE">
-        <div th:object="${agree}">
-            <label for="agree">Are you sure? </label>
-            <input type="checkbox" name="agree" id="agree" th:field="*{flag}">
-            <p class="error" th:if="${#fields.hasErrors('flag')}" th:errors="*{flag}"></p>
-        </div>
+<form th:method="DELETE">
+    <div th:object="${agree}">
+        <label for="agree">Are you sure? </label>
+        <input id="agree" name="agree" th:field="*{flag}" type="checkbox">
+        <p class="error" th:errors="*{flag}" th:if="${#fields.hasErrors('flag')}"></p>
+    </div>
 
-        <input type="submit" value="Delete">
-    </form>
+    <input type="submit" value="Delete">
+</form>
 </body>
 </html>

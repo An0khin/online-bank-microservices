@@ -26,7 +26,7 @@ import java.util.HashSet;
 @Component
 @Slf4j
 public class AuthorizationFilter extends OncePerRequestFilter {
-    public static final String LOGIN_URL = "http://localhost:8082/login";
+    public static final String LOGIN_URL = "http://localhost:8082/auth/login";
     @Autowired
     private TokenService tokenService;
     @Autowired
@@ -38,11 +38,17 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        if(!enabled) {
+
+        log.info(request.getRequestURI());
+        log.info(request.getMethod());
+
+        if(!enabled || request.getRequestURI().equals("/auth/login")) {
             filterChain.doFilter(request, response);
+            return;
         }
 
         if(request.getCookies() == null) {
+            log.info("No cookies");
             response.sendRedirect(LOGIN_URL);
             return;
         }
@@ -73,18 +79,23 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 String name = tokenService.getName(refreshCookie, SecretType.REFRESH);
                 String role = tokenService.getRole(refreshCookie, SecretType.REFRESH);
 
-                String newRefreshToken = template.getForObject("http://localhost:8082/auth/new_refresh_token?username={username}&role={role}",
+                String newRefreshToken = template.getForObject("http://localhost:8082/token/new_refresh_token?username={username}&role={role}",
                         String.class,
                         name,
                         role);
 
-                String newAccessToken = template.getForObject("http://localhost:8082/auth/new_token?username={username}&role={role}",
+                String newAccessToken = template.getForObject("http://localhost:8082/token/new_token?username={username}&role={role}",
                         String.class,
                         name,
                         role);
 
-                response.addCookie(new Cookie("Authorization", newAccessToken));
-                response.addCookie(new Cookie("Refresh", newRefreshToken));
+                Cookie newAuthorizationCookie = new Cookie("Authorization", newAccessToken);
+                newAuthorizationCookie.setPath("/");
+                Cookie newRefreshCookie = new Cookie("Refresh", newRefreshToken);
+                newRefreshCookie.setPath("/");
+
+                response.addCookie(newAuthorizationCookie);
+                response.addCookie(newRefreshCookie);
 
                 log.info("new token - " + newAccessToken);
                 authCookie = newAccessToken;
@@ -111,7 +122,6 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
             log.info("SecurityContextHolder has got authentication");
             filterChain.doFilter(request, response);
-
         }
     }
 

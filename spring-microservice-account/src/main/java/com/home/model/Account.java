@@ -1,9 +1,6 @@
-package com.home.dao;
+package com.home.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity(name = "accounts")
 @Table(name = "accounts")
-public class AccountEntity {
+public class Account {
     @Id
     @Column(nullable = false)
     private String login;
@@ -24,7 +21,8 @@ public class AccountEntity {
     @Column(nullable = false)
     private String role;
 
-    @Column(nullable = false)
-    private int passport;
+    //    @Column(nullable = false)
+    @OneToOne(cascade = CascadeType.ALL)
+    private Passport passport;
 }
 

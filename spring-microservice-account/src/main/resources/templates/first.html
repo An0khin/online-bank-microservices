@@ -1,53 +1,53 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>Online Bank</title>
 </head>
 <body>
-    <p>Hello</p>
+<p>Hello</p>
 
-    <div sec:authorize="hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN')">
-        <a th:href="@{/register}">Create new account</a>
-        <br>
-        <a th:href="@{/admin/search}">Search account</a>
-        <br>
-        <a th:href="@{/admin/allCreditRequests}">All credit requests</a>
-        <hr>
-    </div>
+<div sec:authorize="hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN')">
+    <a th:href="@{/register}">Create new account</a>
+    <br>
+    <a th:href="@{/admin/search}">Search account</a>
+    <br>
+    <a th:href="@{/admin/allCreditRequests}">All credit requests</a>
+    <hr>
+</div>
 
 
-    <a th:href="@{/allCards}">All cards</a>
-    <br>
-    <a th:href="@{/orderNewDC}">Order new debit card</a>
-    <br>
-    <a th:href="@{/orderNewS}">Order new saving</a>
-    <br>
-    <a th:href="@{/takeCredit}">Take credit</a>
-    <br>
-    <a th:href="@{/allCreditCards}">All credit cards</a>
-    <br>
-    <a th:href="@{/allCreditRequests}">All credit requests</a>
-    <br>
-    <a th:href="@{/newCreditRequest}">New credit request</a>
-    <br>
-    <a th:href="@{/update}">Change account data</a>
-    <br>
+<a th:href="@{/allCards}">All cards</a>
+<br>
+<a th:href="@{/orderNewDC}">Order new debit card</a>
+<br>
+<a th:href="@{/orderNewS}">Order new saving</a>
+<br>
+<a th:href="@{/takeCredit}">Take credit</a>
+<br>
+<a th:href="@{/allCreditCards}">All credit cards</a>
+<br>
+<a th:href="@{/allCreditRequests}">All credit requests</a>
+<br>
+<a th:href="@{/newCreditRequest}">New credit request</a>
+<br>
+<a th:href="@{/update}">Change account data</a>
+<br>
 
-    <a th:href="@{/transfer/debitToDebit}">Transfer from one debit card to another</a>
-    <br>
-    <a th:href="@{/transfer/debitToSaving}">Transfer from debit card to saving</a>
-    <br>
-    <a th:href="@{/transfer/savingToDebit}">Transfer from saving to debit card</a>
-    <br>
+<a th:href="@{/transfer/debitToDebit}">Transfer from one debit card to another</a>
+<br>
+<a th:href="@{/transfer/debitToSaving}">Transfer from debit card to saving</a>
+<br>
+<a th:href="@{/transfer/savingToDebit}">Transfer from saving to debit card</a>
+<br>
 
-    <a th:href="@{/debitTransactions}">Debit transactions</a>
-    <br>
-    <a th:href="@{/delete}">Delete</a>
-    <br>
-    <a th:href="@{/logout}">Logout</a>
+<a th:href="@{/debitTransactions}">Debit transactions</a>
+<br>
+<a th:href="@{/delete}">Delete</a>
+<br>
+<a th:href="@{/logout}">Logout</a>
 </body>
 </html>

@@ -19,8 +19,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.anyRequest().hasRole("USER"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/register").hasAnyRole("ADMIN", "OWNER")
+                        .requestMatchers("/auth/login").permitAll()
+                        .anyRequest().authenticated())
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+//                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 }
