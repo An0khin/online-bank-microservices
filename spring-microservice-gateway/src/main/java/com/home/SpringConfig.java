@@ -21,14 +21,19 @@ public class SpringConfig {
                         .uri("lb://saving-client"))
                 .route("credit-route", r -> r.path("/credit/**")
                         .uri("lb://credit-client"))
-                .route("register", r -> r.path("/register")
-                        .filters(spec -> spec.rewritePath("/register", "/auth"))
+//                .route("register", r -> r.path("/register")
+////                        .filters(spec -> spec.rewritePath("/register", "/auth"))
+//                        .uri("lb://account-client"))
+                .route("registerRest", r -> r.path("/security/register")
+                        .filters(spec -> spec.rewritePath("/security/register", "/auth"))
                         .uri("lb://security-client"))
-                .route("token", r -> r.path("/login")
-                        .filters(spec -> spec.rewritePath("/login", "/auth/token"))
+                .route("token", r -> r.path("/account/login")
+                        .filters(spec -> spec.rewritePath("/account/login", "/auth/token"))
                         .uri("lb://security-client"))
                 .route("new_token", r -> r.path("/auth/**")
                         .uri("lb://security-client"))
+                .route("account-route", r -> r.path("/account/**")
+                        .uri("lb://account-client"))
                 .build();
     }
 }
